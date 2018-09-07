@@ -32,3 +32,6 @@ msbuild.wrn
 
 # Visual Studio 2015
 .vs/
+
+[Aa]ppsettings.json
+[Aa]ppsettings.[Ss]taging.json
