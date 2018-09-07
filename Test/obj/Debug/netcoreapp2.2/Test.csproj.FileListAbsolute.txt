@@ -1,4 +1,0 @@
-C:\Users\Mads Engel Lundt\source\repos\CQRS\CQRSTest\obj\Debug\netcoreapp2.2\Test.csprojResolveAssemblyReference.cache
-C:\Users\Mads Engel Lundt\source\repos\CQRS\CQRSTest\obj\Debug\netcoreapp2.2\Test.csproj.CoreCompileInputs.cache
-C:\Users\Mads Engel Lundt\source\repos\CQRS\CQRSTest\obj\Debug\netcoreapp2.2\Test.AssemblyInfoInputs.cache
-C:\Users\Mads Engel Lundt\source\repos\CQRS\CQRSTest\obj\Debug\netcoreapp2.2\Test.AssemblyInfo.cs

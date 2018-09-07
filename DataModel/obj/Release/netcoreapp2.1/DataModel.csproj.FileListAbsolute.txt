@@ -1,9 +1,0 @@
-C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\bin\Release\netcoreapp2.1\DataModel.deps.json
-C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\bin\Release\netcoreapp2.1\DataModel.dll
-C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\bin\Release\netcoreapp2.1\DataModel.pdb
-C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Release\netcoreapp2.1\DataModel.csprojAssemblyReference.cache
-C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Release\netcoreapp2.1\DataModel.csproj.CoreCompileInputs.cache
-C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Release\netcoreapp2.1\DataModel.AssemblyInfoInputs.cache
-C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Release\netcoreapp2.1\DataModel.AssemblyInfo.cs
-C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Release\netcoreapp2.1\DataModel.dll
-C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Release\netcoreapp2.1\DataModel.pdb
