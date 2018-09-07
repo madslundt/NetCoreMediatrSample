@@ -10,7 +10,7 @@ Some of the  dependencies are:
 
  Running on .NET Core 2.1
  
- ## Structure is simple
+ ## Structure
   - Src: Here goes the application
   - DataModel: Here goes all the implementations for the database/store
   - Test: Here goes all tests for the application
