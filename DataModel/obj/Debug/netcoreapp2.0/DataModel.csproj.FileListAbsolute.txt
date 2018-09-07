@@ -1,0 +1,9 @@
+c:\Users\mads engel lundt\source\repos\CQRS\DataModel\bin\Debug\netcoreapp2.0\DataModel.deps.json
+c:\Users\mads engel lundt\source\repos\CQRS\DataModel\bin\Debug\netcoreapp2.0\DataModel.dll
+c:\Users\mads engel lundt\source\repos\CQRS\DataModel\bin\Debug\netcoreapp2.0\DataModel.pdb
+c:\Users\mads engel lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.0\DataModel.csprojResolveAssemblyReference.cache
+c:\Users\mads engel lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.0\DataModel.csproj.CoreCompileInputs.cache
+c:\Users\mads engel lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.0\DataModel.AssemblyInfoInputs.cache
+c:\Users\mads engel lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.0\DataModel.AssemblyInfo.cs
+c:\Users\mads engel lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.0\DataModel.dll
+c:\Users\mads engel lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.0\DataModel.pdb

@@ -1,0 +1,9 @@
+C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\bin\Debug\netcoreapp2.1\DataModel.deps.json
+C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\bin\Debug\netcoreapp2.1\DataModel.dll
+C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\bin\Debug\netcoreapp2.1\DataModel.pdb
+C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.1\DataModel.csprojResolveAssemblyReference.cache
+C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.1\DataModel.csproj.CoreCompileInputs.cache
+C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.1\DataModel.AssemblyInfoInputs.cache
+C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.1\DataModel.AssemblyInfo.cs
+C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.1\DataModel.dll
+C:\Users\Mads Engel Lundt\source\repos\CQRS\DataModel\obj\Debug\netcoreapp2.1\DataModel.pdb
