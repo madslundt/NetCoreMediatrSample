@@ -10,11 +10,12 @@ Some of the  dependencies are:
 
  Running on .NET Core 2.1
  
- Structure is simple:
+ ## Structure is simple
   - Src: Here goes the application
   - DataModel: Here goes all the implementations for the database/store
   - Test: Here goes all tests for the application
-  
+ 
+ ### Src
  Src is structured by having a feature in a single file. That gives us the following structure:
   - Controllers: Here goes all the controllers without any logic
   - Features: Here goes all the features (eg. User/GetUser.cs)
@@ -22,7 +23,7 @@ Some of the  dependencies are:
   - ThirdParty: Here goes the implementation for third party services (eg. Facebook login)
 
 
-Build and run with Docker
+## Build and run with Docker
 ```
 $ docker build -t aspnetapp .
 $ docker run -d -p 8080:80 --name myapp aspnetapp
