@@ -20,3 +20,10 @@ Some of the  dependencies are:
   - Features: Here goes all the features (eg. User/GetUser.cs)
   - Infrastructure: Here goes the implementation for the application it self (eg. Middlewares, Filters, Pipeline)
   - ThirdParty: Here goes the implementation for third party services (eg. Facebook login)
+
+
+Build and run with Docker
+```
+$ docker build -t aspnetapp .
+$ docker run -d -p 8080:80 --name myapp aspnetapp
+```
