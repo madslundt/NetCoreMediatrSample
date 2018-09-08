@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
-
+using DataModel;
+using Hangfire;
+using Src.Helpers;
+using System.Data;
 
 namespace Src.Features.User
 {
@@ -33,21 +36,59 @@ namespace Src.Features.User
             }
         }
 
-        public class GetUserHandler : IRequestHandler<Command, Result>
+        public class MappingProfile : Profile
         {
-            public GetUserHandler()
+            public MappingProfile()
             {
+                CreateMap<Command, DataModel.Models.User.User>(MemberList.Source);
+            }
+        }
 
+        public class CreateUserHandler : IRequestHandler<Command, Result>
+        {
+            private readonly DatabaseContext _db;
+            private readonly IMapper _mapper;
+            private readonly IBackgroundJobClient _job;
+            private readonly IUserHelper _userHelper;
+
+            public CreateUserHandler(
+                DatabaseContext db, 
+                IMapper mapper, 
+                IBackgroundJobClient job,
+                IUserHelper userHelper)
+            {
+                _db = db;
+                _mapper = mapper;
+                _job = job;
+                _userHelper = userHelper;
             }
 
-            public Task<Result> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result> Handle(Command message, CancellationToken cancellationToken)
             {
+                var userExists = await _userHelper.DoesUserExistByEmail(message.Email);
+
+                if (userExists)
+                {
+                    throw new DuplicateNameException($"{nameof(message.Email)} already exists");
+                }
+
+                var user = _mapper.Map<Command, DataModel.Models.User.User>(message);
+
+                await Task.Run(() => _job.Enqueue(() => CreateUser(user))).ConfigureAwait(false);
+
                 var result = new Result
                 {
-                    Id = Guid.NewGuid()
+                    Id = user.Id
                 };
 
-                return Task.FromResult(result);
+                return result;
+            }
+
+            public void CreateUser(DataModel.Models.User.User user)
+            {
+                _db.Users.Add(user);
+
+                _db.SaveChanges();
             }
         }
     }

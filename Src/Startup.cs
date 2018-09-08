@@ -9,6 +9,16 @@ using Src.Infrastructure.Pipeline;
 using FluentValidation.AspNetCore;
 using MediatR.Pipeline;
 using Src.Infrastructure.Filter;
+using Hangfire;
+using DataModel;
+using Microsoft.EntityFrameworkCore;
+using StructureMap;
+using Src.Infrastructure.Registry;
+using System;
+using CorrelationId;
+using Microsoft.Extensions.Logging;
+using App.Metrics;
+using App.Metrics.AspNetCore;
 
 namespace Src
 {
@@ -21,45 +31,73 @@ namespace Src
                 .AddJsonFile("appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
 
-            //Mapper.AssertConfigurationIsValid();
-
             services.AddMediatR(typeof(Startup));
+            
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString(ConnectionStringKeys.App)));
+            
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString(ConnectionStringKeys.Hangfire)));
+
+            services.AddCorrelationId();
 
             // Pipeline
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(MetricsProcessor<,>));
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPostProcessorBehavior<,>));
 
             services.AddMvc(opt =>
             {
-                //opt.Filters.Add(typeof(DbContextTransactionPageFilter));
-                //opt.ModelBinderProviders.Insert(0, new EntityModelBinderProvider());
                 opt.Filters.Add(typeof(ExceptionFilter));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
+            
+            services.AddMetrics();
+
+            IContainer container = new Container();
+            container.Configure(config =>
+            {
+                config.AddRegistry<HelperRegistry>();
+
+                config.Populate(services);
+            });
+
+            return container.GetInstance<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(
+            IApplicationBuilder app, 
+            IHostingEnvironment env,
+            ILoggerFactory loggerFactory)
         {
-            app.UseMiniProfiler();
+            app.UseCorrelationId(new CorrelationIdOptions
+            {
+                UseGuidForCorrelationId = true
+            });
 
             if (env.IsDevelopment())
             {
+                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+                loggerFactory.AddDebug();
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
+                app.UseDatabaseErrorPage();
             }
+
+            app.UseHangfireServer();
+            app.UseHangfireDashboard();
 
             app.UseMvc();
         }

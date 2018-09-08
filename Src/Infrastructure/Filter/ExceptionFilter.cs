@@ -1,8 +1,12 @@
-﻿using FluentValidation;
+﻿using CorrelationId;
+using FluentValidation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Net;
 
 namespace Src.Infrastructure.Filter
@@ -24,6 +28,10 @@ namespace Src.Infrastructure.Filter
             {
                 return HttpStatusCode.Unauthorized;
             }
+            else if (ex is DuplicateNameException)
+            {
+                return HttpStatusCode.Conflict;
+            }
             else
             {
                 return HttpStatusCode.InternalServerError;
@@ -31,35 +39,64 @@ namespace Src.Infrastructure.Filter
         }
 
         private readonly IHostingEnvironment _env;
+        private readonly ICorrelationContextAccessor _correlationContext;
+        private readonly ILogger _logger;
 
-        public ExceptionFilter(IHostingEnvironment env)
+        public ExceptionFilter(
+            IHostingEnvironment env,
+            ICorrelationContextAccessor correlationContext,
+            ILogger<ExceptionFilter> logger)
         {
             _env = env;
+            _correlationContext = correlationContext;
+            _logger = logger;
         }
 
         public void OnException(ExceptionContext context)
         {
             if (context.Exception is Exception)
             {
-                if (_env.IsProduction())
+                var content = new Dictionary<string, object>
                 {
-                    context.Result = new ObjectResult(new
-                    {
-                        ErrorMessage = context.Exception.Message
-                    });
-                }
-                else
-                {
-                    context.Result = new ObjectResult(new
-                    {
-                        ErrorMessage = context.Exception.Message,
-                        Exception = context.Exception
-                    });
-                }
-            
-                context.HttpContext.Response.StatusCode = (int)MapStatusCode(context.Exception);
+                    { "ErrorMessage", context.Exception.Message },
+                    { "CorrelationId", _correlationContext.CorrelationContext.CorrelationId }
+                };
 
+                if (!_env.IsProduction())
+                {
+                    content.Add("StackTrace", context.Exception.StackTrace);
+                }
+
+                var statusCode = (int)MapStatusCode(context.Exception);
+
+                LogError(context, statusCode);
+
+                context.Result = new ObjectResult(content);
+                context.HttpContext.Response.StatusCode = statusCode;
                 context.Exception = null;
+            }
+        }
+
+        private void LogError(ExceptionContext context, int statusCode)
+        {
+            var logTitle = $"{context.HttpContext.Request.Path} - {context.Exception.Message}";
+            var logError = new
+            {
+                CorrelationId = _correlationContext.CorrelationContext.CorrelationId,
+                Context = context,
+            };
+
+            if (statusCode >= 500)
+            {
+                _logger.LogCritical(logTitle, logError);
+            }
+            else if (statusCode >= 400)
+            {
+                _logger.LogWarning(logTitle, logError);
+            }
+            else
+            {
+                _logger.LogInformation(logTitle, logError);
             }
         }
     }

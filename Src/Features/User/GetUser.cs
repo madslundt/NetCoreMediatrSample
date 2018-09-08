@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using DataModel;
 using FluentValidation;
 using MediatR;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace Src.Features.User
 {
@@ -31,16 +33,37 @@ namespace Src.Features.User
             }
         }
 
+        public class MappingProfile : Profile
+        {
+            public MappingProfile()
+            {
+                CreateMap<DataModel.Models.User.User, Result>(MemberList.Source);
+            }
+        }
+
         public class GetUserHandler : IRequestHandler<Query, Result>
         {
-            public GetUserHandler()
-            {
+            private readonly DatabaseContext _db;
+            private readonly IMapper _mapper;
 
+            public GetUserHandler(DatabaseContext db, IMapper mapper)
+            {
+                _db = db;
+                _mapper = mapper;
             }
 
-            public Task<Result> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result> Handle(Query message, CancellationToken cancellationToken)
             {
-                return Task.FromResult(new Result());
+                var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == message.Id).ConfigureAwait(false);
+
+                if (user is null)
+                {
+                    throw new ArgumentNullException($"{nameof(user)} was not found");
+                }
+
+                var result = _mapper.Map<DataModel.Models.User.User, Result>(user);
+
+                return result;
             }
         }
     }

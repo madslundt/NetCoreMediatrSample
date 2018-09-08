@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore;
+﻿using App.Metrics.AspNetCore;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Src
@@ -12,6 +13,8 @@ namespace Src
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseMetrics()
                 .UseStartup<Startup>()
                 .Build();
     }

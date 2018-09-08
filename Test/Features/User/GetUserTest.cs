@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoFixture;
+using FluentAssertions;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -56,7 +57,7 @@ namespace Test.Features.User
 
             var result = _mediator.Send(getUser);
 
-            Assert.NotNull(result);
+            result.Should().NotBeNull();
         }
 
 

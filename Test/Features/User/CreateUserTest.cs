@@ -3,6 +3,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.Xunit2;
+using FluentAssertions;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -115,7 +116,7 @@ namespace Test.Features.User
 
             var result = _mediator.Send(createUser);
 
-            Assert.NotNull(result);
+            result.Should().NotBeNull();
         }
 
 
