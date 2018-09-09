@@ -2,16 +2,16 @@
 Sample and template for Mediatr pattern in .NET Core.
 
 Some of the  dependencies are:
- - AutoFixture: For testing purpose.
- - Moq: For testing purpose by mocking dependencies.
- - AutoMapper: Eliminate a lot of boilerplate by auto mapping request or response.
- - FluentValidation: For validating requests before they are handled.
- - MediatR: For dispatching request/response, commands, queries, notifications and events.
+ - AutoFixture: Auto generate test objects.
+ - Moq: Mocking classes.
+ - AutoMapper: Eliminate a lot of boilerplate by auto mapping objects (eg. request and response).
+ - FluentValidation: Validating requests before they are handled.
+ - MediatR: Dispatching request/response, commands, queries, notifications and events.
  - FluentAssertions: Better and easier assertions in tests.
  - Hangfire: Background worker.
  - Entity Framework: Object-relatoinal mapping.
  - App.metrics: Real time metrics set up with InfluxDb and Grafana.
- - Microsoft Extensions Logging: Logging API.
+ - Microsoft.Extensions.Logging: Logging API.
 
  Running on .NET Core 2.1
  
