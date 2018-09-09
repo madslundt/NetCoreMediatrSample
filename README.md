@@ -10,7 +10,7 @@ Some of the  dependencies are:
  - FluentAssertions: Better and easier assertions in tests.
  - Hangfire: Background worker.
  - Entity Framework: Object-relatoinal mapping.
- - App.metrics: Real time metrics set up with InfluxDb and Grafana.
+ - App.metrics: Real time metrics and monitoring set up with InfluxDb and Grafana.
  - Microsoft.Extensions.Logging: Logging API.
 
  Running on .NET Core 2.1
