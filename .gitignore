@@ -33,5 +33,6 @@ msbuild.wrn
 # Visual Studio 2015
 .vs/
 
-[Aa]ppsettings.json
+[Aa]ppsettings.[Pp]roduction.json
 [Aa]ppsettings.[Ss]taging.json
+[Aa]ppsettings.[Dd]evelopment.json

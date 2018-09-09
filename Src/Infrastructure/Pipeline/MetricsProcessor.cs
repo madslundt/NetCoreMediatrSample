@@ -14,22 +14,26 @@ namespace Src.Infrastructure.Pipeline
         {
             _metrics = metrics;
         }
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(
+            TRequest request, 
+            CancellationToken cancellationToken, 
+            RequestHandlerDelegate<TResponse> next)
         {
             var requestTimer = new TimerOptions
             {
-                Name = "Mediator Timer",
+                Name = "Mediator Pipeline",
                 MeasurementUnit = App.Metrics.Unit.Requests,
                 DurationUnit = TimeUnit.Milliseconds,
                 RateUnit = TimeUnit.Milliseconds
             };
 
+            TResponse response;
             using (_metrics.Measure.Timer.Time(requestTimer))
             {
-                var response = await next();
-
-                return response;
+                response = await next();
             }
+
+            return response;
         }
     }
 }

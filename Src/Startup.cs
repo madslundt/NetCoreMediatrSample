@@ -18,7 +18,8 @@ using System;
 using CorrelationId;
 using Microsoft.Extensions.Logging;
 using App.Metrics;
-using App.Metrics.AspNetCore;
+using App.Metrics.Formatters.InfluxDB;
+using App.Metrics.Filtering;
 
 namespace Src
 {
@@ -28,8 +29,8 @@ namespace Src
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", true, true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
@@ -62,8 +63,38 @@ namespace Src
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
-            
-            services.AddMetrics();
+
+            var filter = new MetricsFilter().WhereType(MetricType.Timer);
+            var metrics = AppMetrics.CreateDefaultBuilder()
+                .Configuration.Configure(options =>
+                {
+                    options.WithGlobalTags((tags, envInfo) =>
+                    {
+                        tags.Add("app_version", envInfo.EntryAssemblyVersion);
+                    });
+                })
+                .Report.ToInfluxDb(options =>
+                {
+                    options.InfluxDb.BaseUri = new Uri(Configuration.GetSection("MetricsReporting:InfluxDb:Url").Value);
+                    options.InfluxDb.Database = Configuration.GetSection("MetricsReporting:InfluxDb:Database").Value;
+                    options.InfluxDb.UserName = Configuration.GetSection("MetricsReporting:InfluxDb:UserName").Value;
+                    options.InfluxDb.Password = Configuration.GetSection("MetricsReporting:InfluxDb:Password").Value;
+                    options.InfluxDb.Consistenency = "consistency";
+                    options.InfluxDb.RetensionPolicy = "rp";
+                    options.InfluxDb.CreateDataBaseIfNotExists = true;
+                    options.HttpPolicy.BackoffPeriod = TimeSpan.FromSeconds(30);
+                    options.HttpPolicy.FailuresBeforeBackoff = 5;
+                    options.HttpPolicy.Timeout = TimeSpan.FromSeconds(10);
+                    options.MetricsOutputFormatter = new MetricsInfluxDbLineProtocolOutputFormatter();
+                    options.Filter = filter;
+                    options.FlushInterval = TimeSpan.FromSeconds(20);
+                })
+                .Build();
+
+            metrics.ReportRunner.RunAllAsync();
+            services
+                .AddMetrics(metrics)
+                .AddHealthEndpoints();
 
             IContainer container = new Container();
             container.Configure(config =>
@@ -95,6 +126,9 @@ namespace Src
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
             }
+
+            app.UseMetricsAllMiddleware();
+            app.UseMetricsAllEndpoints();
 
             app.UseHangfireServer();
             app.UseHangfireDashboard();
