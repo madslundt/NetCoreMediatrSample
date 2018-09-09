@@ -42,7 +42,7 @@ Real time metrics require Grafana and InfluxDb.
 Logging is set up with Microsoft.Extensions.Logging which means you can add logging providers by your self to it.
 As now it is set up as follow:
  - Status codes 5xx are logged as critical.
- - Status codes 4xx are logged as warning.
+ - Other status codes that are not successful are logged as warning.
  - The whole pipeline (request to response) is logged as information.
 
 Critical and warning logs are named `<endpoint> :: [<status code>] <exception message>` and contain request, stacktrace and correlation id.

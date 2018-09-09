@@ -90,13 +90,9 @@ namespace Src.Infrastructure.Filter
             {
                 _logger.LogCritical(logTitle, logError);
             }
-            else if (statusCode >= 400)
-            {
-                _logger.LogWarning(logTitle, logError);
-            }
             else
             {
-                _logger.LogInformation(logTitle, logError);
+                _logger.LogWarning(logTitle, logError);
             }
         }
     }
