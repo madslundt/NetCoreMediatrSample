@@ -34,7 +34,7 @@ namespace Src.Controllers
         {
             var result = await _mediator.Send(user);
 
-            return Created($"/{result.Id}", result);
+            return Accepted(result);
         }
     }
 }
