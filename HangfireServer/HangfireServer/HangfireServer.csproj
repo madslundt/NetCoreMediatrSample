@@ -5,4 +5,9 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Hangfire" Version="1.6.20" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.6.20" />
+  </ItemGroup>
+
 </Project>
