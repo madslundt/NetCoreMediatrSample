@@ -4,6 +4,7 @@ using App.Metrics.Reporting.InfluxDB;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.IO;
 
 namespace Src
@@ -22,6 +23,7 @@ namespace Src
             var configuration = new ConfigurationBuilder()
                                 .SetBasePath(Directory.GetCurrentDirectory())
                                 .AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
+                                .AddJsonFile(path: $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
                                 .Build();
 
             var influxOptions = new MetricsReportingInfluxDbOptions();

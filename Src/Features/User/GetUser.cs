@@ -18,10 +18,10 @@ namespace Src.Features.User
 
         public class Result
         {
-            public Guid Id { get; }
-            public string Email { get; }
-            public string FirstName { get; }
-            public string LastName { get; }
+            public Guid Id { get; set; }
+            public string Email { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
             public DateTime Created { get; set; }
         }
 

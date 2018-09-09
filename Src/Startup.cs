@@ -29,8 +29,8 @@ namespace Src
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+                .AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile(path: $"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true) 
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
@@ -115,7 +115,13 @@ namespace Src
             app.UseMetricsAllEndpoints();
             app.UseMetricsAllMiddleware();
 
-            app.UseHangfireServer();
+            app.UseHangfireServer(new BackgroundJobServerOptions
+            {
+                SchedulePollingInterval = TimeSpan.FromSeconds(30),
+                ServerCheckInterval = TimeSpan.FromMinutes(1),
+                ServerName = $"{Environment.MachineName}.{Guid.NewGuid()}",
+                WorkerCount = Environment.ProcessorCount * 5
+            });
             app.UseHangfireDashboard();
 
             app.UseMvc();
