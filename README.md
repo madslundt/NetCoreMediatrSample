@@ -37,6 +37,15 @@ The appliaction requires 2 databases - one for the application and one for Hangf
 Real time metrics require Grafana and InfluxDb.
  1. Add InfluxDb options to appsettings.
  2. Download Grafana dashboard [here](https://grafana.com/dashboards/2125).
+ 
+## Logging
+Logging is set up with Microsoft.Extensions.Logging which means you can add logging providers by your self to it.
+As now it is set up as follow:
+ - Status codes 5xx are logged as critical.
+ - Status codes 4xx are logged as warning.
+ - The whole pipeline (request to response) is logged as information.
+
+Critical and warning logs are named *<endpoint> :: [<status code>] <exception message>* and contain request, stacktrace and correlation id.
 
 ## Build and run with Docker
 ```
