@@ -30,7 +30,7 @@ Some of the  dependencies are:
 
 ## Setting up application
 The appliaction requires 2 databases - one for the application and one for Hangfire.
- 1. Create a new appsettings to your ASPNETCORE_ENVIRONMENT (eg appsettings.Development.json) and add the 2 new connection strings for application and Hangfire.
+ 1. Create a new appsettings to your *ASPNETCORE_ENVIRONMENT* (eg appsettings.Development.json) and add the 2 new connection strings for application and Hangfire.
  2. Run database changes to the application database by running the command `dotnet ef database update -s ../Src` inside DataModel folder (see most of the commands in *DataModel/DatabaseContext.cs*).
  
 ## Setting up real time metrics
@@ -45,7 +45,7 @@ As now it is set up as follow:
  - Status codes 4xx are logged as warning.
  - The whole pipeline (request to response) is logged as information.
 
-Critical and warning logs are named *<endpoint> :: [<status code>] <exception message>* and contain request, stacktrace and correlation id.
+Critical and warning logs are named `<endpoint> :: [<status code>] <exception message>` and contain request, stacktrace and correlation id.
 
 ## Build and run with Docker
 ```
