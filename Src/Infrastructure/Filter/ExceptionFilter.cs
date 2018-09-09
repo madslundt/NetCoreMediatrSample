@@ -79,7 +79,7 @@ namespace Src.Infrastructure.Filter
 
         private void LogError(ExceptionContext context, int statusCode)
         {
-            var logTitle = $"{context.HttpContext.Request.Path} - {context.Exception.Message}";
+            var logTitle = $"{context.HttpContext.Request.Path} :: [{statusCode}] {context.Exception.Message}";
             var logError = new
             {
                 CorrelationId = _correlationContext.CorrelationContext.CorrelationId,

@@ -80,7 +80,7 @@ namespace Src
                     options.InfluxDb.UserName = Configuration.GetSection("MetricsReporting:InfluxDb:UserName").Value;
                     options.InfluxDb.Password = Configuration.GetSection("MetricsReporting:InfluxDb:Password").Value;
                     options.InfluxDb.Consistenency = "consistency";
-                    options.InfluxDb.RetensionPolicy = "rp";
+                    options.InfluxDb.RetentionPolicy = "rp";
                     options.InfluxDb.CreateDataBaseIfNotExists = true;
                     options.HttpPolicy.BackoffPeriod = TimeSpan.FromSeconds(30);
                     options.HttpPolicy.FailuresBeforeBackoff = 5;
@@ -93,8 +93,9 @@ namespace Src
 
             metrics.ReportRunner.RunAllAsync();
             services
-                .AddMetrics(metrics)
-                .AddHealthEndpoints();
+                .AddMetricsTrackingMiddleware()
+                .AddMetricsEndpoints()
+                .AddMetrics(metrics);
 
             IContainer container = new Container();
             container.Configure(config =>

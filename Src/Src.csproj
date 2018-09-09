@@ -12,27 +12,24 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics" Version="2.1.0" />
-    <PackageReference Include="App.Metrics.AspNetCore.Endpoints" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.AspNetCore.Health" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.AspNetCore.Health.Endpoints" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.AspNetCore.Health.Hosting" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.AspNetCore.Hosting" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.AspNetCore.Reporting" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.AspNetCore.Tracking" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.Formatters.Json" Version="2.1.0" />
-    <PackageReference Include="App.Metrics.Health" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.Reporting.Console" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.Reporting.Http" Version="2.0.0" />
-    <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="2.0.0" />
+    <PackageReference Include="App.Metrics" Version="3.0.0-alpha-0780" />
+    <PackageReference Include="App.Metrics.AspNetCore" Version="3.0.0-alpha-0098" />
+    <PackageReference Include="App.Metrics.AspNetCore.Endpoints" Version="3.0.0-alpha-0098" />
+    <PackageReference Include="App.Metrics.AspNetCore.Hosting" Version="3.0.0-alpha-0098" />
+    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.0.0-alpha-0098" />
+    <PackageReference Include="App.Metrics.AspNetCore.Reporting" Version="3.0.0-alpha-0094" />
+    <PackageReference Include="App.Metrics.AspNetCore.Tracking" Version="3.0.0-alpha-0098" />
+    <PackageReference Include="App.Metrics.Formatters.InfluxDB" Version="3.0.0-alpha-0067" />
+    <PackageReference Include="App.Metrics.Reporting.Console" Version="3.0.0-alpha-0081" />
+    <PackageReference Include="App.Metrics.Reporting.Http" Version="3.0.0-alpha-0081" />
+    <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="3.0.0-alpha-0067" />
     <PackageReference Include="AutoFixture.AutoMoq" Version="4.5.0" />
     <PackageReference Include="AutoFixture.Xunit2" Version="4.5.0" />
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="CorrelationId" Version="2.1.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.0.100" />
-    <PackageReference Include="Hangfire" Version="1.6.20" />
+    <PackageReference Include="Hangfire" Version="1.7.0-beta2" />
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.3" />
