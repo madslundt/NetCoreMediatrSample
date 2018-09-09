@@ -15,7 +15,7 @@ namespace Src.Infrastructure.Pipeline
 
         public async Task Process(TRequest request, TResponse response)
         {
-            _logger.LogDebug($"Handled {typeof(TRequest).FullName}", new
+            _logger.LogInformation($"Handled {typeof(TRequest).FullName}", new
             {
                 Request = request,
                 Response = response

@@ -1,6 +1,5 @@
 ﻿using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +16,10 @@ namespace Src.Infrastructure.Pipeline
 
         public async Task Process(TRequest request, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"Handling {typeof(TRequest).FullName}", request);
+            _logger.LogInformation($"Handling {typeof(TRequest).FullName}", new
+            {
+                Request = request
+            });
         }
     }
 }

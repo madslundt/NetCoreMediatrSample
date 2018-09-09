@@ -33,6 +33,8 @@ namespace Src.Infrastructure.Pipeline
                 response = await next();
             }
 
+            _metrics.ReportRunner.RunAllAsync();
+
             return response;
         }
     }

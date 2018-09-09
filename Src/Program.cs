@@ -1,6 +1,10 @@
-﻿using App.Metrics.AspNetCore;
+﻿using App.Metrics;
+using App.Metrics.AspNetCore;
+using App.Metrics.Reporting.InfluxDB;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace Src
 {
@@ -8,14 +12,31 @@ namespace Src
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var host = BuildWebHost(args);
+
+            host.Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            var configuration = new ConfigurationBuilder()
+                                .SetBasePath(Directory.GetCurrentDirectory())
+                                .AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
+                                .Build();
+
+            var influxOptions = new MetricsReportingInfluxDbOptions();
+            configuration.GetSection(nameof(MetricsReportingInfluxDbOptions)).Bind(influxOptions);
+
+            return WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
+                .ConfigureMetricsWithDefaults(
+                    builder =>
+                    {
+                        builder.Report.ToInfluxDb(influxOptions);
+                    })
                 .UseMetrics()
                 .UseStartup<Startup>()
                 .Build();
+        }
     }
 }

@@ -17,16 +17,15 @@ using Src.Infrastructure.Registry;
 using System;
 using CorrelationId;
 using Microsoft.Extensions.Logging;
+using App.Metrics.Reporting.InfluxDB;
 using App.Metrics;
-using App.Metrics.Formatters.InfluxDB;
-using App.Metrics.Filtering;
-using Src.Infrastructure.Metrics;
+using App.Metrics.AspNetCore;
 
 namespace Src
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment env, IConfiguration configuration)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -54,6 +53,17 @@ namespace Src
 
             services.AddOptions();
 
+            var metricsConfigSection = Configuration.GetSection(nameof(MetricsOptions));
+            var influxOptions = new MetricsReportingInfluxDbOptions();
+            Configuration.GetSection(nameof(MetricsReportingInfluxDbOptions)).Bind(influxOptions);
+
+            var metrics = AppMetrics.CreateDefaultBuilder()
+                .Configuration.Configure(metricsConfigSection.AsEnumerable())
+                .Report.ToInfluxDb(influxOptions)
+                .Build();
+
+            services.AddMetrics(metrics);
+            services.AddMetricsReportScheduler();
 
             // Pipeline
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(MetricsProcessor<,>));
@@ -65,10 +75,9 @@ namespace Src
             {
                 opt.Filters.Add(typeof(ExceptionFilter));
             })
+            .AddMetrics()
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
-
-            services.AddMetricsConfiguration(Configuration);
 
             IContainer container = new Container();
             container.Configure(config =>
@@ -77,6 +86,8 @@ namespace Src
 
                 config.Populate(services);
             });
+
+            metrics.ReportRunner.RunAllAsync();
 
             return container.GetInstance<IServiceProvider>();
         }
@@ -101,8 +112,8 @@ namespace Src
                 app.UseDatabaseErrorPage();
             }
 
-            app.UseMetricsAllMiddleware();
             app.UseMetricsAllEndpoints();
+            app.UseMetricsAllMiddleware();
 
             app.UseHangfireServer();
             app.UseHangfireDashboard();

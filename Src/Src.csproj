@@ -12,21 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics" Version="3.0.0-alpha-0780" />
-    <PackageReference Include="App.Metrics.AspNetCore" Version="3.0.0-alpha-0098" />
-    <PackageReference Include="App.Metrics.AspNetCore.Endpoints" Version="3.0.0-alpha-0098" />
-    <PackageReference Include="App.Metrics.AspNetCore.Hosting" Version="3.0.0-alpha-0098" />
-    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="3.0.0-alpha-0098" />
-    <PackageReference Include="App.Metrics.AspNetCore.Reporting" Version="3.0.0-alpha-0094" />
-    <PackageReference Include="App.Metrics.AspNetCore.Tracking" Version="3.0.0-alpha-0098" />
-    <PackageReference Include="App.Metrics.Formatters.InfluxDB" Version="3.0.0-alpha-0067" />
-    <PackageReference Include="App.Metrics.Formatting.ElasticSearch" Version="1.1.1" />
-    <PackageReference Include="App.Metrics.Health.Formatters.Json" Version="2.1.0-alpha-0118" />
-    <PackageReference Include="App.Metrics.Reporting.Console" Version="3.0.0-alpha-0081" />
-    <PackageReference Include="App.Metrics.Reporting.Elasticsearch" Version="2.0.0-alpha" />
-    <PackageReference Include="App.Metrics.Reporting.Graphite" Version="3.0.0-alpha-0035" />
-    <PackageReference Include="App.Metrics.Reporting.Http" Version="3.0.0-alpha-0081" />
-    <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="3.0.0-alpha-0067" />
+    <PackageReference Include="App.Metrics.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Mvc" Version="2.0.0" />
+    <PackageReference Include="App.Metrics.AspNetCore.Reporting" Version="2.0.0" />
+    <PackageReference Include="App.Metrics.Reporting.InfluxDB" Version="2.0.0" />
     <PackageReference Include="AutoFixture.AutoMoq" Version="4.5.0" />
     <PackageReference Include="AutoFixture.Xunit2" Version="4.5.0" />
     <PackageReference Include="AutoMapper" Version="7.0.1" />
