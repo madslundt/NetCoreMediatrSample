@@ -12,13 +12,14 @@ namespace DataModel
     // Remove latest migration
     // dotnet ef migrations remove -s ../Src
 
-    // Revert a migration from database
+    // Revert the database to a migration
     // dotnet ef database update <MIGRATION NAME> -s ../Src
 
     // Generate SQL script
     // dotnet ef migrations script -s ../Src
 
-    // -s ../Src is the point to appsettings in Src
+    // -s ../Src is used to point to appsettings in Src application. 
+    // Remember to set environment eg. 'setx ASPNETCORE_ENVIRONMENT Development'
 
     public class DatabaseContext : DbContext
     {
