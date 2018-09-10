@@ -2,7 +2,7 @@
 Sample and template for Mediatr pattern in .NET Core.
 
 Some of the  dependencies are:
- - App.metrics: Real time metrics and monitoring set up with InfluxDb and Grafana.
+ - App.Metrics: Real time metrics and monitoring set up with InfluxDb and Grafana.
  - AutoFixture: Auto generate test objects.
  - AutoMapper: Eliminate a lot of boilerplate by auto mapping objects (eg. request and response).
  - CorrelationId: Add Correlation ID to Http context to track it.
