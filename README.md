@@ -1,5 +1,5 @@
 # NetCoreMediatrSample
-Sample and template for Mediatr pattern in .NET Core.
+Sample using Command and Query Responsibility Segregation (CQRS) implemented in .NET Core by using MediatR and using background workers, real-time metrics and monitoring, logging, validations and more
 
 Some of the  dependencies are:
  - App.Metrics: Real time metrics and monitoring set up with InfluxDb and Grafana.
