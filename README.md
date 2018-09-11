@@ -29,7 +29,6 @@ Some of the  dependencies are:
   - Features: All features (eg. User/GetUser.cs).
   - Infrastructure: Infrastructure for the application it self (eg. Middlewares, Filters, Pipeline).
   - ThirdParty: Third party services (eg. Facebook login).
-  - Helpers: Shared services that can be used as helper function to different features (eg. UserHelper to retrieve a user by id, email, etc.)
 
 ## Setting up application
 The appliaction require 2 databases - one for the application and one for Hangfire.

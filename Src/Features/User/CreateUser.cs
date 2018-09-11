@@ -7,7 +7,6 @@ using MediatR;
 using AutoMapper;
 using DataModel;
 using Hangfire;
-using Src.Helpers;
 using System.Data;
 
 namespace Src.Features.User
@@ -49,23 +48,23 @@ namespace Src.Features.User
             private readonly DatabaseContext _db;
             private readonly IMapper _mapper;
             private readonly IBackgroundJobClient _job;
-            private readonly IUserHelper _userHelper;
+            private readonly IMediator _mediator;
 
             public CreateUserHandler(
                 DatabaseContext db, 
                 IMapper mapper, 
                 IBackgroundJobClient job,
-                IUserHelper userHelper)
+                IMediator mediator)
             {
                 _db = db;
                 _mapper = mapper;
                 _job = job;
-                _userHelper = userHelper;
+                _mediator = mediator;
             }
 
             public async Task<Result> Handle(Command message, CancellationToken cancellationToken)
             {
-                var userExists = await _userHelper.DoesUserExistByEmail(message.Email);
+                var userExists = await _mediator.Send(new DoesUserExist.Query(message.Email));
 
                 if (userExists)
                 {

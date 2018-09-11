@@ -13,7 +13,6 @@ using Hangfire;
 using DataModel;
 using Microsoft.EntityFrameworkCore;
 using StructureMap;
-using Src.Infrastructure.Registry;
 using System;
 using CorrelationId;
 using Microsoft.Extensions.Logging;
@@ -82,8 +81,6 @@ namespace Src
             IContainer container = new Container();
             container.Configure(config =>
             {
-                config.AddRegistry<HelperRegistry>();
-
                 config.Populate(services);
             });
 

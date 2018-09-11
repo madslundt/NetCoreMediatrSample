@@ -9,23 +9,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Src;
 using Src.Features.User;
 using Src.Infrastructure.Pipeline;
+using Test.Common;
 using Xunit;
 
 namespace Test.Features.User
 {
-    public class GetUserTest
+    public class GetUserTest : TestBaseInMemoryDatabase
     {
-        private readonly IMediator _mediator;
-
-        public GetUserTest()
-        {
-            var services = new ServiceCollection();
-            services.AddMediatR();
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            services.AddMvc().AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
-            _mediator = services.BuildServiceProvider().GetService<IMediator>();
-        }
-
         [Fact]
         public async Task ThrowValidationExceptionWhenIdIsEmpty()
         {
@@ -49,13 +39,19 @@ namespace Test.Features.User
         }
 
         [Fact]
-        public void GetUserWhenProvidingAValidId()
+        public async Task GetUserWhenProvidingAValidId()
         {
             var fixture = new Fixture();
             var getUser = fixture.Build<GetUser.Query>()
                 .Create();
 
-            var result = _mediator.Send(getUser);
+            //_db.Users.Add(new DataModel.Models.User.User
+            //{
+            //    Id = getUser.Id
+            //});
+            //_db.SaveChanges();
+
+            var result = await _mediator.Send(getUser);
 
             result.Should().NotBeNull();
         }
