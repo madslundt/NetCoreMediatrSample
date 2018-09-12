@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
@@ -8,6 +7,7 @@ using AutoMapper;
 using DataModel;
 using Hangfire;
 using System.Data;
+using Src.Infrastructure.Hangfire;
 
 namespace Src.Features.User
 {
@@ -39,7 +39,7 @@ namespace Src.Features.User
         {
             public MappingProfile()
             {
-                CreateMap<Command, DataModel.Models.User.User>(MemberList.Source);
+                CreateMap<Command, DataModel.Models.User>(MemberList.Source);
             }
         }
 
@@ -47,18 +47,18 @@ namespace Src.Features.User
         {
             private readonly DatabaseContext _db;
             private readonly IMapper _mapper;
-            private readonly IBackgroundJobClient _job;
+            private readonly IHangfireWrapper _hangfire;
             private readonly IMediator _mediator;
 
             public CreateUserHandler(
                 DatabaseContext db, 
-                IMapper mapper, 
-                IBackgroundJobClient job,
+                IMapper mapper,
+                IHangfireWrapper hangfire,
                 IMediator mediator)
             {
                 _db = db;
                 _mapper = mapper;
-                _job = job;
+                _hangfire = hangfire;
                 _mediator = mediator;
             }
 
@@ -71,9 +71,9 @@ namespace Src.Features.User
                     throw new DuplicateNameException($"{nameof(message.Email)} already exists");
                 }
 
-                var user = _mapper.Map<Command, DataModel.Models.User.User>(message);
+                var user = _mapper.Map<Command, DataModel.Models.User>(message);
 
-                await Task.Run(() => _job.Enqueue(() => CreateUser(user))).ConfigureAwait(false);
+                await Task.Run(() => _hangfire.BackgroundJobClient.Enqueue(() => CreateUser(user))).ConfigureAwait(false);
 
                 var result = new Result
                 {
@@ -83,7 +83,7 @@ namespace Src.Features.User
                 return result;
             }
 
-            public void CreateUser(DataModel.Models.User.User user)
+            public void CreateUser(DataModel.Models.User user)
             {
                 _db.Users.Add(user);
 

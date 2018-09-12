@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
 using DataModel;
 using FluentValidation.AspNetCore;
+using Hangfire;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Src;
-using Src.Features.User;
+using Src.Infrastructure.Hangfire;
 using Src.Infrastructure.Pipeline;
+using StructureMap;
 using System;
-using System.Reflection;
 
 namespace Test.Common
 {
@@ -32,8 +33,15 @@ namespace Test.Common
 
             services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase(databaseName), ServiceLifetime.Transient);
             services.AddTransient(sp => sp.GetService<DatabaseContext>());
+            services.AddAutoMapper();
 
-            _mediator = services.BuildServiceProvider().GetService<IMediator>();
+            IContainer container = new Container(cfg =>
+            {
+                cfg.For<IHangfireWrapper>().Use<HangfireWrapper>();
+                cfg.Populate(services);
+            });
+
+            _mediator = container.GetInstance<IMediator>();
         }
 
         public void Dispose()

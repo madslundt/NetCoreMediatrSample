@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace DataModel.Models.User
+namespace DataModel.Models
 {
     public class UserContext
     {

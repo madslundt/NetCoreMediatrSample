@@ -1,4 +1,4 @@
-﻿using DataModel.Models.User;
+﻿using DataModel.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataModel

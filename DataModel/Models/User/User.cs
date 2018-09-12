@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataModel.Models.User
+namespace DataModel.Models
 {
     public class User
     {

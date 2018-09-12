@@ -37,7 +37,7 @@ namespace Src.Features.User
         {
             public MappingProfile()
             {
-                CreateMap<DataModel.Models.User.User, Result>(MemberList.Source);
+                CreateMap<DataModel.Models.User, Result>(MemberList.Source);
             }
         }
 
@@ -61,7 +61,7 @@ namespace Src.Features.User
                     throw new ArgumentNullException($"{nameof(user)} was not found");
                 }
 
-                var result = _mapper.Map<DataModel.Models.User.User, Result>(user);
+                var result = _mapper.Map<DataModel.Models.User, Result>(user);
 
                 return result;
             }

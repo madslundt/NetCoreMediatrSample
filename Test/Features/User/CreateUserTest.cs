@@ -12,22 +12,12 @@ using Src;
 using Src.Features.User;
 using Src.Infrastructure.Pipeline;
 using Xunit;
+using Test.Common;
 
 namespace Test.Features.User
 {
-    public class CreateUserTest
+    public class CreateUserTest : TestBaseInMemoryDatabase
     {
-        private readonly IMediator _mediator;
-
-        public CreateUserTest()
-        {
-            var services = new ServiceCollection();
-            services.AddMediatR();
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            services.AddMvc().AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
-            _mediator = services.BuildServiceProvider().GetService<IMediator>();
-        }
-
         [Fact]
         public async Task ThrowValidationExceptionWhenFirstNameIsEmpty()
         {
@@ -105,16 +95,15 @@ namespace Test.Features.User
         }
 
         [Fact]
-        public void CreateUserWhenProvidingValidData()
+        public async Task CreateUserWhenProvidingValidData()
         {
             var fixture = new Fixture();
 
             var createUser = fixture.Build<CreateUser.Command>()
-                .Without(x => x.FirstName)
                 .With(x => x.Email, fixture.Create<MailAddress>().Address)
                 .Create();
 
-            var result = _mediator.Send(createUser);
+            var result = await _mediator.Send(createUser);
 
             result.Should().NotBeNull();
         }
