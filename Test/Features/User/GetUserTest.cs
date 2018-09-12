@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using FluentAssertions;
@@ -14,7 +15,7 @@ using Xunit;
 
 namespace Test.Features.User
 {
-    public class GetUserTest : TestBaseInMemoryDatabase
+    public class GetUserTest : TestBase
     {
         [Fact]
         public async Task ThrowValidationExceptionWhenIdIsEmpty()
@@ -45,17 +46,15 @@ namespace Test.Features.User
             var getUser = fixture.Build<GetUser.Query>()
                 .Create();
 
-            //_db.Users.Add(new DataModel.Models.User.User
-            //{
-            //    Id = getUser.Id
-            //});
-            //_db.SaveChanges();
+            _db.Users.Add(new DataModel.Models.User
+            {
+                Id = getUser.Id
+            });
+            _db.SaveChanges();
 
             var result = await _mediator.Send(getUser);
 
             result.Should().NotBeNull();
         }
-
-
     }
 }

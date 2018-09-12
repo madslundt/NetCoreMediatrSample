@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Test.Features.User
 {
-    public class DoesUserExistTest : TestBaseInMemoryDatabase
+    public class DoesUserExistTest : TestBase
     {
         [Fact]
         public async Task ThrowValidationExceptionWhenUserIdIsEmpty()

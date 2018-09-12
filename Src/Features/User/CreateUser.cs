@@ -7,7 +7,6 @@ using AutoMapper;
 using DataModel;
 using Hangfire;
 using System.Data;
-using Src.Infrastructure.Hangfire;
 
 namespace Src.Features.User
 {
@@ -47,18 +46,18 @@ namespace Src.Features.User
         {
             private readonly DatabaseContext _db;
             private readonly IMapper _mapper;
-            private readonly IHangfireWrapper _hangfire;
+            private readonly IBackgroundJobClient _jobClient;
             private readonly IMediator _mediator;
 
             public CreateUserHandler(
                 DatabaseContext db, 
                 IMapper mapper,
-                IHangfireWrapper hangfire,
+                IBackgroundJobClient jobClient,
                 IMediator mediator)
             {
                 _db = db;
                 _mapper = mapper;
-                _hangfire = hangfire;
+                _jobClient = jobClient;
                 _mediator = mediator;
             }
 
@@ -73,7 +72,9 @@ namespace Src.Features.User
 
                 var user = _mapper.Map<Command, DataModel.Models.User>(message);
 
-                await Task.Run(() => _hangfire.BackgroundJobClient.Enqueue(() => CreateUser(user))).ConfigureAwait(false);
+                _jobClient.Enqueue(() => CreateUser(user));
+
+                await Task.Run(() => _jobClient.Enqueue(() => CreateUser(user))).ConfigureAwait(false);
 
                 var result = new Result
                 {

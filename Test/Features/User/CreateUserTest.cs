@@ -13,10 +13,15 @@ using Src.Features.User;
 using Src.Infrastructure.Pipeline;
 using Xunit;
 using Test.Common;
+using System.Linq;
+using Hangfire.Common;
+using Moq;
+using Hangfire.States;
+using AutoMapper;
 
 namespace Test.Features.User
 {
-    public class CreateUserTest : TestBaseInMemoryDatabase
+    public class CreateUserTest : TestBase
     {
         [Fact]
         public async Task ThrowValidationExceptionWhenFirstNameIsEmpty()
@@ -95,7 +100,7 @@ namespace Test.Features.User
         }
 
         [Fact]
-        public async Task CreateUserWhenProvidingValidData()
+        public async Task CallCreateUserWhenProvidingValidData()
         {
             var fixture = new Fixture();
 
@@ -106,8 +111,29 @@ namespace Test.Features.User
             var result = await _mediator.Send(createUser);
 
             result.Should().NotBeNull();
+
+            _jobClientMock.Verify(x => 
+                x.Create(It.Is<Job>(job => 
+                    job.Method.Name == nameof(CreateUser.CreateUserHandler.CreateUser)), It.IsAny<EnqueuedState>()));
         }
 
+        [Fact]
+        public void CreateUserOutsideHandler()
+        {
+            var fixture = new Fixture();
 
+            var expectedUser = fixture.Build<DataModel.Models.User>()
+                .With(x => x.Email, fixture.Create<MailAddress>().Address)
+                .Create();
+
+            var mapper = new Mock<IMapper>();
+            var createUser = new CreateUser.CreateUserHandler(_db, mapper.Object, _jobClientMock.Object, _mediator);
+
+            createUser.CreateUser(expectedUser);
+
+            var actualUser = _db.Users.FirstOrDefault();
+
+            actualUser.Should().BeEquivalentTo(expectedUser);
+        }
     }
 }
