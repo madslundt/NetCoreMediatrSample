@@ -15,7 +15,6 @@ namespace Test.Features.User
         [Fact]
         public async Task ThrowValidationExceptionWhenUserIdIsEmpty()
         {
-            var fixture = new Fixture();
             var query = new DoesUserExist.Query(Guid.Empty);
 
             await Assert.ThrowsAsync<ValidationException>(() => _mediator.Send(query));
@@ -24,7 +23,6 @@ namespace Test.Features.User
         [Fact]
         public async Task ThrowValidationExceptionWhenEmailIsEmpty()
         {
-            var fixture = new Fixture();
             var query = new DoesUserExist.Query(string.Empty);
 
             await Assert.ThrowsAsync<ValidationException>(() => _mediator.Send(query));
@@ -33,7 +31,6 @@ namespace Test.Features.User
         [Fact]
         public async Task ThrowValidationExceptionWhenEmailIsNull()
         {
-            var fixture = new Fixture();
             var query = new DoesUserExist.Query(null);
 
             await Assert.ThrowsAsync<ValidationException>(() => _mediator.Send(query));
@@ -42,8 +39,7 @@ namespace Test.Features.User
         [Fact]
         public async Task ReturnFalseWhenUserDoesNotExistOnEmail()
         {
-            var fixture = new Fixture();
-            var query = new DoesUserExist.Query(fixture.Create<MailAddress>().Address);
+            var query = new DoesUserExist.Query(_fixture.Create<MailAddress>().Address);
 
             var result = await _mediator.Send(query);
 
@@ -53,7 +49,6 @@ namespace Test.Features.User
         [Fact]
         public async Task ReturnFalseWhenUserDoesNotExistOnUserId()
         {
-            var fixture = new Fixture();
             var query = new DoesUserExist.Query(Guid.NewGuid());
 
             var result = await _mediator.Send(query);
@@ -61,26 +56,38 @@ namespace Test.Features.User
             result.Should().BeFalse();
         }
 
-        //[Fact]
-        //public async Task ReturnTrueWhenUserExistsOnEmail()
-        //{
-        //    var fixture = new Fixture();
-        //    var query = new DoesUserExist.Query(fixture.Create<MailAddress>().Address);
+        [Fact]
+        public async Task ReturnTrueWhenUserExistsOnEmail()
+        {
+            var user = _fixture.Build<DataModel.Models.User>()
+                .With(x => x.Email, _fixture.Create<MailAddress>().Address)
+                .Create();
 
-        //    var result = await _mediator.Send(query);
+            _db.Users.Add(user);
+            _db.SaveChanges();
 
-        //    result.Should().BeFalse();
-        //}
+            var query = new DoesUserExist.Query(user.Email);
 
-        //[Fact]
-        //public async Task ReturnFalseWhenUserExistsOnUserId()
-        //{
-        //    var fixture = new Fixture();
-        //    var query = new DoesUserExist.Query(Guid.NewGuid());
+            var result = await _mediator.Send(query);
 
-        //    var result = await _mediator.Send(query);
+            result.Should().BeTrue();
+        }
 
-        //    result.Should().BeFalse();
-        //}
+        [Fact]
+        public async Task ReturnFalseWhenUserExistsOnUserId()
+        {
+            var user = _fixture.Build<DataModel.Models.User>()
+                .With(x => x.Email, _fixture.Create<MailAddress>().Address)
+                .Create();
+
+            _db.Users.Add(user);
+            _db.SaveChanges();
+
+            var query = new DoesUserExist.Query(user.Id);
+
+            var result = await _mediator.Send(query);
+
+            result.Should().BeTrue();
+        }
     }
 }

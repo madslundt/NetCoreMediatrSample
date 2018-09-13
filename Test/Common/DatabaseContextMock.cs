@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Test.Common
 {
     public static class DatabaseContextMock<T> where T : DbContext
     {
+        public const string SQLITE_CONNECTION_STRING = "DataSource:memory:";
+
         public static DbContextOptions<T> InMemoryDatabase() 
         {
             DbContextOptions<T> options = new DbContextOptionsBuilder<T>()
@@ -14,10 +17,11 @@ namespace Test.Common
             return options;
         }
 
-        public static DbContextOptions<T> SQLite()
+        // Remember to open and close connection when using Sqlite
+        public static DbContextOptions<T> SQLite(SqliteConnection connection)
         {
             DbContextOptions<T> options = new DbContextOptionsBuilder<T>()
-                  .UseSqlite("DataSource=:memory:")
+                  .UseSqlite(connection)
                   .Options;
 
             return options;

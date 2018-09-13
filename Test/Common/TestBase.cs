@@ -1,10 +1,12 @@
-﻿using AutoMapper;
+﻿using AutoFixture;
+using AutoMapper;
 using DataModel;
 using FluentValidation.AspNetCore;
 using Hangfire;
 using Hangfire.Common;
 using Hangfire.States;
 using MediatR;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Src;
@@ -19,24 +21,30 @@ namespace Test.Common
         protected readonly IMediator _mediator;
         protected readonly DatabaseContext _db;
         protected readonly Mock<IBackgroundJobClient> _jobClientMock;
+        protected readonly Fixture _fixture;
 
         public TestBase()
         {
-
             var services = new ServiceCollection();
+
+            // Services
             services.AddMediatR();
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddMvc().AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
+            services.AddAutoMapper();
 
+
+            // Database
             var databaseName = Guid.NewGuid().ToString();
-
             _db = new DatabaseContext(DatabaseContextMock<DatabaseContext>.InMemoryDatabase());
 
-            _jobClientMock = new Mock<IBackgroundJobClient>();
 
+            // Global objects
+            _jobClientMock = new Mock<IBackgroundJobClient>();
             _jobClientMock.Setup(x => x.Create(It.IsAny<Job>(), It.IsAny<EnqueuedState>()));
 
-            services.AddAutoMapper();
+            _fixture = new Fixture();
+
 
             IContainer container = new Container(cfg =>
             {
