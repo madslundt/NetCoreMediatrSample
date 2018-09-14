@@ -19,19 +19,19 @@ Some of the  dependencies are:
  Running on .NET Core 2.1
  
  ## Structure
-  - Src: The application source.
+  - Src: Source of the application.
   - DataModel: Models for the database/store.
   - Test: Application tests (right now only unit tests).
  
  ### Src
- Src is structured by having a feature in a single file. That gives us the following structure:
-  - Controllers: All the controllers.
+ Src is structured by having each feature in a single file. That gives the following structure:
+  - Controllers: All the controllers with endpoints exposed.
   - Features: All features (eg. User/GetUser.cs).
   - Infrastructure: Infrastructure for the application it self (eg. Middlewares, Filters, Pipeline).
   - ThirdParty: Third party services (eg. Facebook login).
 
 ## Setting up application
-The appliaction require 2 databases - one for the application and one for Hangfire.
+The application require 2 databases - one for the application it self and one for Hangfire.
  1. Create a new appsettings to your *ASPNETCORE_ENVIRONMENT* (eg appsettings.Development.json) and add the 2 new connection strings for application and Hangfire.
  2. Run database changes to the application database by running the command `dotnet ef database update -s ../Src` inside DataModel folder (see commands in *DataModel/DatabaseContext.cs*).
  
