@@ -31,7 +31,7 @@ Some of the  dependencies are:
   - ThirdParty: Third party services (eg. Facebook login).
 
 ## Setting up application
-The appliaction require 2 databases - one for the application and one for Hangfire.
+The application require 2 databases - one for the application and one for Hangfire.
  1. Create a new appsettings to your *ASPNETCORE_ENVIRONMENT* (eg appsettings.Development.json) and add the 2 new connection strings for application and Hangfire.
  2. Run database changes to the application database by running the command `dotnet ef database update -s ../Src` inside DataModel folder (see commands in *DataModel/DatabaseContext.cs*).
  
