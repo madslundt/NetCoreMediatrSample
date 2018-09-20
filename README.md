@@ -5,12 +5,12 @@ Some of the  dependencies are:
  - App.Metrics: Real time metrics and monitoring set up with InfluxDb and Grafana.
  - AutoFixture: Auto generate test objects.
  - AutoMapper: Eliminate a lot of boilerplate by auto mapping objects (eg. request and response).
- - CorrelationId: Add Correlation ID to Http context to track it.
+ - CorrelationId: Add Correlation ID to Http context to easier track errors.
  - FluentAssertions: Better and easier assertions in tests.
  - FluentValidation: Validating requests before they are handled.
  - Hangfire: Background worker.
  - MediatR: Dispatching request/response, commands, queries, notifications and events.
- - Microsoft.EntityFrameworkCore: Object-relatoinal mapping.
+ - Microsoft.EntityFrameworkCore: Object-relational mapping.
  - Microsoft.Extensions.Logging: Logging API that allow other providers.
  - Moq: Mocking framework used for testing.
  - StructureMap: IoC Container.
