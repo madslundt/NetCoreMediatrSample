@@ -49,7 +49,8 @@ As now it is set up as follow:
 
 Critical and warning logs are named `<endpoint> :: [<status code>] <exception message>` and contain request, stacktrace and correlation id.
 
-The user receives error message and correlation id in production. For non-production environments the stacktrace is also included.
+The user receives error message and correlation id in production. For development environment the whole 
+exception is also included.
 
 ## Build and run with Docker
 ```

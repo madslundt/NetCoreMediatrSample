@@ -62,9 +62,9 @@ namespace Src.Infrastructure.Filter
                     { "CorrelationId", _correlationContext.CorrelationContext.CorrelationId }
                 };
 
-                if (!_env.IsProduction())
+                if (_env.IsDevelopment())
                 {
-                    content.Add("StackTrace", context.Exception.StackTrace);
+                    content.Add("Exception", context.Exception);
                 }
 
                 var statusCode = (int)MapStatusCode(context.Exception);
