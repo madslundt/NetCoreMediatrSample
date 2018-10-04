@@ -55,7 +55,7 @@ namespace Src.Features.User
 
             public async Task<Result> Handle(Query message, CancellationToken cancellationToken)
             {
-                var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == message.Id).ConfigureAwait(false);
+                var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == message.Id);
 
                 if (user is null)
                 {
