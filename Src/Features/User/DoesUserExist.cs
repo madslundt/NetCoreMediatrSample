@@ -53,7 +53,7 @@ namespace Src.Features.User
                             where (!string.IsNullOrWhiteSpace(message.Email) && message.Email == user.Email) || (message.UserId != Guid.Empty && message.UserId == user.Id)
                             select user.Id;
 
-                var result = await query.AnyAsync().ConfigureAwait(false);
+                var result = await query.AnyAsync();
 
                 return result;
             }
