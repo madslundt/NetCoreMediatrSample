@@ -14,6 +14,8 @@ using DataModel;
 using Microsoft.EntityFrameworkCore;
 using StructureMap;
 using System;
+using System.Linq;
+using System.Reflection;
 using CorrelationId;
 using Microsoft.Extensions.Logging;
 using App.Metrics.Reporting.InfluxDB;
@@ -24,7 +26,7 @@ namespace Src
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env, IConfiguration configuration)
+        public Startup(IHostingEnvironment env, IConfiguration configuration, ILogger<Startup> logger)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -33,9 +35,11 @@ namespace Src
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
+            _logger = logger;
         }
 
         public IConfigurationRoot Configuration { get; }
+        private readonly ILogger<Startup> _logger;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -75,6 +79,7 @@ namespace Src
                 opt.Filters.Add(typeof(ExceptionFilter));
             })
             .AddMetrics()
+            .AddControllersAsServices()
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
 
@@ -85,6 +90,26 @@ namespace Src
             });
 
             metrics.ReportRunner.RunAllAsync();
+
+
+            // Check for missing dependencies
+            var controllers = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(type => typeof(ControllerBase).IsAssignableFrom(type))
+                .ToList();
+
+            var sp = services.BuildServiceProvider();
+            foreach (var controllerType in controllers)
+            {
+                _logger.LogInformation($"Found {controllerType.Name}");
+                try
+                {
+                    sp.GetService(controllerType);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogCritical(ex, $"Cannot create instance of controller {controllerType.FullName}, it is missing some services");
+                }
+            }
 
             return container.GetInstance<IServiceProvider>();
         }
