@@ -13,6 +13,12 @@ namespace DataModel.Models
                 b.Property(p => p.Id)
                     .IsRequired();
 
+                b.Property(p => p.FirstName)
+                    .IsRequired();
+
+                b.Property(p => p.LastName)
+                    .IsRequired();
+
                 b.Property(p => p.Email)
                     .IsRequired();
 
@@ -24,6 +30,13 @@ namespace DataModel.Models
                     .HasForeignKey(fk => fk.Status)
                     .OnDelete(DeleteBehavior.Restrict)
                     .IsRequired();
+
+                b.Ignore(u => u.ConcurrencyStamp)
+                    .Ignore(u => u.NormalizedEmail)
+                    .Ignore(u => u.NormalizedUserName)
+                    .Ignore(u => u.PhoneNumber)
+                    .Ignore(u => u.PhoneNumberConfirmed)
+                    .Ignore(u => u.UserName);
 
                 b.HasKey(k => k.Id);
                 b.ToTable("Users");

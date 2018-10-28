@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Src.Features.User;
 
@@ -22,6 +24,26 @@ namespace Src.Controllers
             var getUser = new GetUser.Query
             {
                 Id = userId
+            };
+
+            var result = await _mediator.Send(getUser);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetUser()
+        {
+            var claims = HttpContext.User.Claims;
+            var extra = HttpContext.User.Identity;
+            var q = User.Claims.Select(c => new {c.Type, c.Value}).ToList();
+
+            var userId = string.Empty;
+
+            var getUser = new GetUser.Query
+            {
+                Id = Guid.Parse(userId)
             };
 
             var result = await _mediator.Send(getUser);

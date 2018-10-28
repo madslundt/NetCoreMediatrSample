@@ -20,13 +20,14 @@ using CorrelationId;
 using Microsoft.Extensions.Logging;
 using App.Metrics.Reporting.InfluxDB;
 using App.Metrics;
-using App.Metrics.AspNetCore;
+using IdentityServer4.AccessTokenValidation;
+using Src.Infrastructure.Identity;
 
 namespace Src
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env, IConfiguration configuration, ILogger<Startup> logger)
+        public Startup(IHostingEnvironment env, ILogger<Startup> logger)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -36,10 +37,12 @@ namespace Src
 
             Configuration = builder.Build();
             _logger = logger;
+            _env = env;
         }
 
         public IConfigurationRoot Configuration { get; }
         private readonly ILogger<Startup> _logger;
+        private readonly IHostingEnvironment _env;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -74,14 +77,26 @@ namespace Src
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPostProcessorBehavior<,>));
 
-            services.AddMvc(opt =>
-            {
-                opt.Filters.Add(typeof(ExceptionFilter));
-            })
-            .AddMetrics()
-            .AddControllersAsServices()
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
-            .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
+            services.AddMvc(opt => { opt.Filters.Add(typeof(ExceptionFilter)); })
+                .AddMetrics()
+                .AddControllersAsServices()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
+
+            // Identity
+            var identityOptions = new IdentityOptions();
+            Configuration.GetSection(nameof(IdentityOptions)).Bind(identityOptions);
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = identityOptions.Authority;
+                    options.ApiName = identityOptions.ApiName;
+                    options.ApiSecret = identityOptions.ApiSecret;
+                    options.RequireHttpsMetadata = _env.IsProduction();
+                    options.EnableCaching = true;
+                    options.CacheDuration = TimeSpan.FromMinutes(10);
+                });
 
             IContainer container = new Container();
             container.Configure(config =>
@@ -144,7 +159,10 @@ namespace Src
                 ServerName = $"{Environment.MachineName}.{Guid.NewGuid()}",
                 WorkerCount = Environment.ProcessorCount * 5
             });
+
             app.UseHangfireDashboard();
+
+            app.UseAuthentication();
 
             app.UseMvc();
         }

@@ -19,21 +19,53 @@ namespace DataModel.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DataModel.Models.User.User", b =>
+            modelBuilder.Entity("DataModel.Models.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ConcurrencyStamp");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("NormalizedName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("DataModel.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AccessFailedCount");
 
                     b.Property<DateTime>("Created");
 
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<string>("FirstName");
+                    b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
+
+                    b.Property<string>("LastName")
+                        .IsRequired();
+
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("SecurityStamp");
 
                     b.Property<int>("Status");
+
+                    b.Property<bool>("TwoFactorEnabled");
 
                     b.HasKey("Id");
 
@@ -45,7 +77,7 @@ namespace DataModel.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DataModel.Models.User.UserStatusRef", b =>
+            modelBuilder.Entity("DataModel.Models.UserStatusRef", b =>
                 {
                     b.Property<int>("Id");
 
@@ -62,9 +94,9 @@ namespace DataModel.Migrations
                     );
                 });
 
-            modelBuilder.Entity("DataModel.Models.User.User", b =>
+            modelBuilder.Entity("DataModel.Models.User", b =>
                 {
-                    b.HasOne("DataModel.Models.User.UserStatusRef", "UserStatusRef")
+                    b.HasOne("DataModel.Models.UserStatusRef", "UserStatusRef")
                         .WithMany()
                         .HasForeignKey("Status")
                         .OnDelete(DeleteBehavior.Restrict);
