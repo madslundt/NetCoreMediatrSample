@@ -9,6 +9,7 @@ Some of the  dependencies are:
  - FluentAssertions: Better and easier assertions in tests.
  - FluentValidation: Validating requests before they are handled.
  - Hangfire: Background worker.
+ - Identityserver4: OpenID Connect and OAuth 2.0 framework.
  - MediatR: Dispatching request/response, commands, queries, notifications and events.
  - Microsoft.EntityFrameworkCore: Object-relational mapping.
  - Microsoft.Extensions.Logging: Logging API that allow other providers.
@@ -16,15 +17,16 @@ Some of the  dependencies are:
  - StructureMap: IoC Container.
  - Xunit: Testing framework.
 
- Running on .NET Core 2.1
+ Running on .NET Core 2.1 (2.1.5+)
  
  ## Structure
-  - Src: Source of the application.
+  - API: Source of the application.
   - DataModel: Models for the database/store.
-  - Test: Application tests (right now only unit tests).
- 
- ### Src
- Src is structured by having each feature in a single file. That gives the following structure:
+  - UnitTest: Unit tests for the application.
+  - IDP: Identity Provider using Identityserver4.
+
+ ### API
+ API is structured by having each feature in a single file. That gives the following structure:
   - Controllers: All the controllers with endpoints exposed.
   - Features: All features (eg. User/GetUser.cs).
   - Infrastructure: Infrastructure for the application it self (eg. Middlewares, Filters, Pipeline).
@@ -33,7 +35,8 @@ Some of the  dependencies are:
 ## Setting up application
 The application require 2 databases - one for the application it self and one for Hangfire.
  1. Create a new appsettings to your *ASPNETCORE_ENVIRONMENT* (eg appsettings.Development.json) and add the 2 new connection strings for application and Hangfire.
- 2. Run database changes to the application database by running the command `dotnet ef database update -s ../Src` inside DataModel folder (see commands in *DataModel/DatabaseContext.cs*).
+ 2. Run database changes to the application database by running the command `dotnet ef database update -s ../API` inside DataModel folder (see commands in *DataModel/DatabaseContext.cs*).
+ 3. Add connection string to the Identity server (IDP/appsettings.json or change environment and add a new appsettings). The database used for the application can also be used to the Identity server. Once the Identity server project is ran it will run the migrations for it.
  
 ## Setting up real time metrics
 Real time metrics require Grafana and InfluxDb.

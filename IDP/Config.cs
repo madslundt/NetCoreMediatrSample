@@ -30,7 +30,13 @@ namespace IDP
         {
             var result = new List<ApiResource>
             {
-                new ApiResource("srcapi", "Src API")
+                new ApiResource("api1", "API", new List<string>
+                {
+                    "role"
+                })
+                {
+                    ApiSecrets = { new Secret("apisecret".Sha256()) }
+                }
             };
 
             return result;
@@ -42,21 +48,32 @@ namespace IDP
             {
                 new Client
                 {
-                    ClientId = "srcclient",
-                    ClientName = "Src client",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                    AccessTokenLifetime = 120,
+                    ClientId = "webclient",
+                    ClientName = "Web client",
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    AccessTokenLifetime = 120, // 2 minutes
                     AllowOfflineAccess = true,
-                    RefreshTokenExpiration = TokenExpiration.Sliding,
+                    AccessTokenType = AccessTokenType.Jwt,
                     UpdateAccessTokenClaimsOnRefresh = true,
-                    RefreshTokenUsage = TokenUsage.OneTimeOnly,
+                    AbsoluteRefreshTokenLifetime = 2592000, // 30 days
+                    SlidingRefreshTokenLifetime = 1296000, // 15 days
+                    RefreshTokenExpiration = TokenExpiration.Sliding, // once a new refresh token is requested its life time will be renewed by the amount of SlidingRefreshTokenLifetime but the refresh token will never exceed AbsoluteRefreshTokenLifetime
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    RedirectUris = new List<string>
+                    {
+                        "http://localhost:5000/signin-oidc"
+                    },
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        "http://localhost:5000/signout-callback-oidc"
+                    },
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "roles",
-                        "srcapi"
+                        "api1"
                     },
                     ClientSecrets =
                     {
