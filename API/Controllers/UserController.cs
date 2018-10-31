@@ -33,7 +33,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetUser()
+        public async Task<IActionResult> GetCurrentUser()
         {
             var claims = HttpContext.User.Claims;
             var extra = HttpContext.User.Identity;
@@ -52,11 +52,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetUser([FromBody] CreateUser.Command user)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUser.Command user)
         {
             var result = await _mediator.Send(user);
 
-            return Accepted(result);
+            return Ok(result);
         }
     }
 }

@@ -16,11 +16,7 @@ namespace IDP
             var result = new List<IdentityResource>
             {
                 new IdentityResources.OpenId(), // OpenId connect
-                new IdentityResources.Profile(),
-                new IdentityResource(
-                    "roles",
-                    "Custom roles",
-                    new List<string> { "role" })
+                new IdentityResources.Profile()
             };
 
             return result;
@@ -30,13 +26,7 @@ namespace IDP
         {
             var result = new List<ApiResource>
             {
-                new ApiResource("api1", "API", new List<string>
-                {
-                    "role"
-                })
-                {
-                    ApiSecrets = { new Secret("apisecret".Sha256()) }
-                }
+                new ApiResource("api1", "API")
             };
 
             return result;
@@ -48,12 +38,13 @@ namespace IDP
             {
                 new Client
                 {
-                    ClientId = "webclient",
-                    ClientName = "Web client",
+                    ClientId = "hybridclient",
+                    ClientName = "Hybrid client",
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     AccessTokenLifetime = 120, // 2 minutes
                     AllowOfflineAccess = true,
                     AccessTokenType = AccessTokenType.Jwt,
+                    AllowAccessTokensViaBrowser = true,
                     UpdateAccessTokenClaimsOnRefresh = true,
                     AbsoluteRefreshTokenLifetime = 2592000, // 30 days
                     SlidingRefreshTokenLifetime = 1296000, // 15 days
@@ -72,7 +63,54 @@ namespace IDP
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.OfflineAccess,
-                        "roles",
+                        "api1"
+                    },
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    }
+                },
+                new Client
+                {
+                    ClientId = "clientcredentialsclient",
+                    ClientName = "Client Credentials Client",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AccessTokenLifetime = 120, // 2 minutes
+                    AllowOfflineAccess = true,
+                    AccessTokenType = AccessTokenType.Jwt,
+                    UpdateAccessTokenClaimsOnRefresh = true,
+                    AbsoluteRefreshTokenLifetime = 2592000, // 30 days
+                    SlidingRefreshTokenLifetime = 1296000, // 15 days
+                    RefreshTokenExpiration = TokenExpiration.Sliding, // once a new refresh token is requested its life time will be renewed by the amount of SlidingRefreshTokenLifetime but the refresh token will never exceed AbsoluteRefreshTokenLifetime
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "api1"
+                    },
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    }
+                },
+                new Client
+                {
+                    ClientId = "resourceownerclient",
+                    ClientName = "Resource Owner Client",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    AccessTokenLifetime = 120, // 2 minutes
+                    AllowOfflineAccess = true,
+                    AccessTokenType = AccessTokenType.Jwt,
+                    UpdateAccessTokenClaimsOnRefresh = true,
+                    AbsoluteRefreshTokenLifetime = 2592000, // 30 days
+                    SlidingRefreshTokenLifetime = 1296000, // 15 days
+                    RefreshTokenExpiration = TokenExpiration.Sliding, // once a new refresh token is requested its life time will be renewed by the amount of SlidingRefreshTokenLifetime but the refresh token will never exceed AbsoluteRefreshTokenLifetime
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         "api1"
                     },
                     ClientSecrets =
