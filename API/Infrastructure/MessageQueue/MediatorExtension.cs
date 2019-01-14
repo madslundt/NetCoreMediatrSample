@@ -22,7 +22,7 @@ namespace API.Infrastructure.MessageQueue
 
         public void SendCommand(IRequest request)
         {
-            _mediator.Send(request);
+            _mediator.Send(request).Wait();
         }
     }
 }

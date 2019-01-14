@@ -4,11 +4,11 @@ using MediatR;
 
 namespace API.Infrastructure.MessageQueue
 {
-    public class MediatRJobActivator : JobActivator
+    public class MediatorJobActivator : JobActivator
     {
         private readonly IMediator _mediator;
 
-        public MediatRJobActivator(IMediator mediator)
+        public MediatorJobActivator(IMediator mediator)
         {
             _mediator = mediator;
         }

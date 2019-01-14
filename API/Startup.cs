@@ -4,6 +4,7 @@ using System.Reflection;
 using App.Metrics;
 using App.Metrics.Reporting.InfluxDB;
 using API.Infrastructure.Filter;
+using API.Infrastructure.MessageQueue;
 using API.Infrastructure.Pipeline;
 using AutoMapper;
 using CorrelationId;
@@ -11,6 +12,7 @@ using DataModel;
 using DataModel.Models;
 using FluentValidation.AspNetCore;
 using Hangfire;
+using Hangfire.Dashboard;
 using IdentityServer4.AccessTokenValidation;
 using MediatR;
 using MediatR.Pipeline;
@@ -117,6 +119,9 @@ namespace API
                 config.Populate(services);
             });
 
+            var mediator = container.GetInstance<IMediator>();
+            GlobalConfiguration.Configuration.UseMediatR(mediator);
+
             metrics.ReportRunner.RunAllAsync();
 
 
@@ -173,10 +178,26 @@ namespace API
                 WorkerCount = Environment.ProcessorCount * 5
             });
 
-            app.UseHangfireDashboard();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                IsReadOnlyFunc = (DashboardContext context) => true,
+                Authorization = new[] { new MyAuthorizationFilter() }
+            });
             app.UseAuthentication();
 
             app.UseMvc();
+        }
+
+        public class MyAuthorizationFilter : IDashboardAuthorizationFilter
+        {
+            public bool Authorize(DashboardContext context)
+            {
+                var httpContext = context.GetHttpContext();
+
+                // Allow all authenticated users to see the Dashboard (potentially dangerous).
+                //return httpContext.User.Identity.IsAuthenticated;
+                return true;
+            }
         }
     }
 }

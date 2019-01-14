@@ -1,4 +1,5 @@
 ﻿using DataModel.Models;
+using DataModel.Models.Claim;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataModel
@@ -29,6 +30,7 @@ namespace DataModel
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Claim> Claims { get; set; }
         public DbSet<UserStatusRef> UserStatuses { get; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -36,6 +38,7 @@ namespace DataModel
             base.OnModelCreating(builder);
 
             UserContext.Build(builder);
+            ClaimContext.Build(builder);
             RoleContext.Build(builder);
         }
     }

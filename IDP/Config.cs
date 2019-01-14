@@ -38,7 +38,7 @@ namespace IDP
             {
                 new Client
                 {
-                    ClientId = "hybridclient",
+                    ClientId = "h.client",
                     ClientName = "Hybrid client",
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     AccessTokenLifetime = 120, // 2 minutes
@@ -72,7 +72,7 @@ namespace IDP
                 },
                 new Client
                 {
-                    ClientId = "clientcredentialsclient",
+                    ClientId = "cc.client",
                     ClientName = "Client Credentials Client",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AccessTokenLifetime = 120, // 2 minutes
@@ -95,7 +95,7 @@ namespace IDP
                 },
                 new Client
                 {
-                    ClientId = "resourceownerclient",
+                    ClientId = "ro.client",
                     ClientName = "Resource Owner Client",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     AccessTokenLifetime = 120, // 2 minutes

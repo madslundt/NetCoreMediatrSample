@@ -31,13 +31,6 @@ namespace DataModel.Models
                     .OnDelete(DeleteBehavior.Restrict)
                     .IsRequired();
 
-                //b.Ignore(u => u.ConcurrencyStamp)
-                //    .Ignore(u => u.NormalizedEmail)
-                //    .Ignore(u => u.NormalizedUserName)
-                //    .Ignore(u => u.PhoneNumber)
-                //    .Ignore(u => u.PhoneNumberConfirmed)
-                //    .Ignore(u => u.EmailConfirmed);
-
                 b.HasKey(k => k.Id);
                 b.ToTable("Users");
             });

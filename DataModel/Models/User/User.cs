@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 
 namespace DataModel.Models
@@ -15,5 +16,7 @@ namespace DataModel.Models
         public UserStatusRef UserStatusRef { get; set; }
 
         public DateTime Created { get; set; } = DateTime.UtcNow;
+
+        public ICollection<Claim.Claim> Claims { get; set; } = new List<Claim.Claim>();
     }
 }
