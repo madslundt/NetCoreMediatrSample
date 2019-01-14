@@ -25,6 +25,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StructureMap;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace API
 {
@@ -73,6 +74,19 @@ namespace API
 
             services.AddMetrics(metrics);
             services.AddMetricsReportScheduler();
+
+            // Swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "API",
+                    Description = "API v1",
+                    TermsOfService = "None",
+                });
+                c.CustomSchemaIds(x => x.FullName);
+            });
 
             // Pipeline
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(MetricsProcessor<,>));
@@ -169,6 +183,12 @@ namespace API
 
             app.UseMetricsAllEndpoints();
             app.UseMetricsAllMiddleware();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
+            });
 
             app.UseHangfireServer(new BackgroundJobServerOptions
             {
