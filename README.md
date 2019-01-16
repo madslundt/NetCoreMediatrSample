@@ -14,10 +14,12 @@ Some of the  dependencies are:
  - Microsoft.EntityFrameworkCore: Object-relational mapping.
  - Microsoft.Extensions.Logging: Logging API that allow other providers.
  - Moq: Mocking framework used for testing.
+ - Sentry.io: Logging provider
  - StructureMap: IoC Container.
+ - Swagger: API documentation page
  - Xunit: Testing framework.
 
- Running on .NET Core 2.1 (2.1.5+)
+ Running on .NET Core 2.2
  
  ## Structure
   - API: Source of the application.
