@@ -73,7 +73,10 @@ namespace API
                 .Build();
 
             services.AddMetrics(metrics);
-            services.AddMetricsReportScheduler();
+            services.AddMetricsTrackingMiddleware();
+            services.AddMetricsEndpoints();
+            services.AddMetricsReportingHostedService();
+
 
             // Swagger
             services.AddSwaggerGen(c =>
@@ -97,7 +100,7 @@ namespace API
             services.AddMvc(opt => { opt.Filters.Add(typeof(ExceptionFilter)); })
                 .AddMetrics()
                 .AddControllersAsServices()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
 
             // Identity
@@ -158,6 +161,13 @@ namespace API
                 }
             }
 
+            services.AddLogging(builder => builder
+                .AddConfiguration(Configuration)
+                .AddConsole()
+                .AddDebug()
+                .AddEventSourceLogger()
+                .AddSentry());
+
             return container.GetInstance<IServiceProvider>();
         }
 
@@ -174,8 +184,6 @@ namespace API
 
             if (env.IsDevelopment())
             {
-                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-                loggerFactory.AddDebug();
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();

@@ -10,6 +10,8 @@ using Hangfire.Common;
 using Hangfire.States;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using StructureMap;
 
@@ -49,6 +51,7 @@ namespace UnitTest.Common
             {
                 cfg.For<IBackgroundJobClient>().Use(_jobClientMock.Object);
                 cfg.For<DatabaseContext>().Use(_db);
+                cfg.For(typeof(ILogger<>)).Use(typeof(NullLogger<>));
                 cfg.Populate(services);
             });
 

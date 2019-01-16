@@ -30,7 +30,10 @@ namespace API
             configuration.GetSection(nameof(MetricsReportingInfluxDbOptions)).Bind(influxOptions);
 
             return WebHost.CreateDefaultBuilder(args)
-                .UseKestrel()
+                .ConfigureKestrel((context, options) =>
+                {
+                    // Set properties and call methods on options
+                })
                 .ConfigureMetricsWithDefaults(
                     builder =>
                     {
