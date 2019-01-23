@@ -49,16 +49,13 @@ namespace API.Features.User
         {
             private readonly IMapper _mapper;
             private readonly IMediator _mediator;
-            private readonly UserManager<DataModel.Models.User> _userManager;
 
             public CreateUserHandler(
                 IMapper mapper,
-                IMediator mediator,
-                UserManager<DataModel.Models.User> userManager)
+                IMediator mediator)
             {
                 _mapper = mapper;
                 _mediator = mediator;
-                _userManager = userManager;
             }
 
             public async Task<Result> Handle(Command message, CancellationToken cancellationToken)
@@ -71,15 +68,6 @@ namespace API.Features.User
                 }
 
                 var user = _mapper.Map<Command, DataModel.Models.User>(message);
-                user.UserName = user.Email;
-                
-
-                var createUserResult = await _userManager.CreateAsync(user, message.Password);
-                
-                if (!createUserResult.Succeeded)
-                {
-                    throw new Exception(string.Join("\n", createUserResult.Errors.Select(e => e.Description)));
-                }
 
                 var result = new Result
                 {

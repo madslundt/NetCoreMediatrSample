@@ -16,11 +16,13 @@ using Hangfire.Dashboard;
 using IdentityServer4.AccessTokenValidation;
 using MediatR;
 using MediatR.Pipeline;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -97,27 +99,20 @@ namespace API
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPostProcessorBehavior<,>));
 
-            services.AddMvc(opt => { opt.Filters.Add(typeof(ExceptionFilter)); })
+            services.AddMvc(opt =>
+                {
+                    opt.Filters.Add(typeof(ExceptionFilter));
+                })
                 .AddMetrics()
                 .AddControllersAsServices()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
 
             // Identity
+            services.AddAuthorization();
+
             var identityOptions = new Infrastructure.Identity.IdentityOptions();
             Configuration.GetSection(nameof(Infrastructure.Identity.IdentityOptions)).Bind(identityOptions);
-
-            services.AddIdentity<User, Role>(options =>
-                {
-                    options.Password.RequireDigit = true;
-                    options.Password.RequireLowercase = true;
-                    options.Password.RequireNonAlphanumeric = true;
-                    options.Password.RequireUppercase = true;
-                    options.Password.RequiredLength = 6;
-                    options.User.RequireUniqueEmail = true;
-                })
-                .AddEntityFrameworkStores<DatabaseContext>()
-                .AddDefaultTokenProviders();
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
@@ -161,6 +156,20 @@ namespace API
                 }
             }
 
+            // CORS
+            var corsOptions = new Infrastructure.Cors.CorsOptions();
+            Configuration.GetSection(nameof(Infrastructure.Cors.CorsOptions)).Bind(corsOptions);
+            services.AddCors(options =>
+            {
+                // this defines a CORS policy called "default"
+                options.AddPolicy("default", policy =>
+                {
+                    policy.WithOrigins(string.Join(',', corsOptions.Origins))
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
             services.AddLogging(builder => builder
                 .AddConfiguration(Configuration)
                 .AddConsole()
@@ -174,8 +183,7 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(
             IApplicationBuilder app, 
-            IHostingEnvironment env,
-            ILoggerFactory loggerFactory)
+            IHostingEnvironment env)
         {
             app.UseCorrelationId(new CorrelationIdOptions
             {
@@ -187,6 +195,10 @@ namespace API
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                app.UseCors("default");
             }
 
             app.UseMetricsAllEndpoints();
@@ -211,6 +223,7 @@ namespace API
                 IsReadOnlyFunc = (DashboardContext context) => true,
                 Authorization = new[] { new MyAuthorizationFilter() }
             });
+            
             app.UseAuthentication();
 
             app.UseMvc();
