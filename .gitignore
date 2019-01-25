@@ -36,3 +36,5 @@ msbuild.wrn
 [Aa]ppsettings.[Pp]roduction.json
 [Aa]ppsettings.[Ss]taging.json
 [Aa]ppsettings.[Dd]evelopment.json
+
+API/API.xml
