@@ -204,19 +204,19 @@ namespace API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1");
             });
 
-            //app.UseHangfireServer(new BackgroundJobServerOptions
-            //{
-            //    SchedulePollingInterval = TimeSpan.FromSeconds(30),
-            //    ServerCheckInterval = TimeSpan.FromMinutes(1),
-            //    ServerName = $"{Environment.MachineName}.{Guid.NewGuid()}",
-            //    WorkerCount = Environment.ProcessorCount * 5
-            //});
+            app.UseHangfireServer(new BackgroundJobServerOptions
+            {
+                SchedulePollingInterval = TimeSpan.FromSeconds(30),
+                ServerCheckInterval = TimeSpan.FromMinutes(1),
+                ServerName = $"{Environment.MachineName}.{Guid.NewGuid()}",
+                WorkerCount = Environment.ProcessorCount * 5
+            });
 
-            //app.UseHangfireDashboard("/hangfire", new DashboardOptions
-            //{
-            //    IsReadOnlyFunc = (DashboardContext context) => true,
-            //    Authorization = new[] { new MyAuthorizationFilter() }
-            //});
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                IsReadOnlyFunc = (DashboardContext context) => true,
+                Authorization = new[] { new MyAuthorizationFilter() }
+            });
             app.UseAuthentication();
 
             app.UseMvc();
