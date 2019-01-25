@@ -90,6 +90,10 @@ namespace API.Infrastructure.Filter
             {
                 _logger.LogCritical(logTitle, logError);
             }
+            else if (statusCode == 404 || statusCode == 401)
+            {
+                _logger.LogInformation(logTitle, logError);
+            }
             else
             {
                 _logger.LogWarning(logTitle, logError);
