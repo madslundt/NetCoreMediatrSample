@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace DataModel.Models
 {
-    public class User
+    public class User : IdentityUser
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 

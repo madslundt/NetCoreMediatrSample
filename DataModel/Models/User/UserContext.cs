@@ -32,7 +32,6 @@ namespace DataModel.Models
                     .IsRequired();
 
                 b.HasKey(k => k.Id);
-                b.ToTable("Users");
             });
 
             builder.Entity<UserStatusRef>(b =>
@@ -41,7 +40,6 @@ namespace DataModel.Models
                     .IsRequired();
 
                 b.HasKey(k => k.Id);
-                b.ToTable("UserStatusReferences");
 
                 b.HasData(Enum.GetValues(typeof(UserStatus)).Cast<UserStatus>().Select(userStatus => new UserStatusRef(userStatus)).ToArray());
             });

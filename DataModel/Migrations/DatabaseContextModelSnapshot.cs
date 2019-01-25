@@ -15,30 +15,13 @@ namespace DataModel.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DataModel.Models.Claim.Claim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType");
-
-                    b.Property<string>("ClaimValue");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Claims");
-                });
-
             modelBuilder.Entity("DataModel.Models.Role", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp");
@@ -114,13 +97,24 @@ namespace DataModel.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserStatusReferences");
+                    b.ToTable("UserStatuses");
 
                     b.HasData(
-                        new { Id = 0, Name = "WaitingConfirmation" },
-                        new { Id = 1, Name = "Active" },
-                        new { Id = 2, Name = "Deactive" }
-                    );
+                        new
+                        {
+                            Id = 0,
+                            Name = "WaitingConfirmation"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "Active"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Deactive"
+                        });
                 });
 
             modelBuilder.Entity("DataModel.Models.User", b =>
