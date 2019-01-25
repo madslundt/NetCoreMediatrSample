@@ -54,8 +54,9 @@ As now it is set up as follow:
 
 Critical and warning logs are named `<endpoint> :: [<status code>] <exception message>` and contain request, stacktrace and correlation id.
 
-The user receives error message and correlation id in production. For development environment the whole 
-exception is also included.
+The user receives error message and correlation id in production. For development environment the stack trace is also included.
+
+Sentry.io logging provider has been added to the project. This can be used or removed.
 
 ## Build and run with Docker
 ```
