@@ -145,8 +145,6 @@ namespace API
             GlobalConfiguration.Configuration.UseMediatR(mediator);
 
             metrics.ReportRunner.RunAllAsync();
-            
-            services.AddHealthChecks();
 
             // Check for missing dependencies
             var controllers = Assembly.GetExecutingAssembly().GetTypes()
@@ -198,7 +196,6 @@ namespace API
             app.UseStaticFiles();
             app.UseMetricsAllEndpoints();
             app.UseMetricsAllMiddleware();
-            app.UseHealthChecks("/health");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
