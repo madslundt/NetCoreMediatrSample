@@ -21,6 +21,8 @@ Some of the  dependencies are:
 
  Running on .NET Core 2.2
  
+ See my project [knowledge-quiz-api](https://github.com/madslundt/knowledge-quiz-api) for real-world usage.
+ 
  ## Structure
   - API: Source of the application.
   - DataModel: Models for the database/store.
