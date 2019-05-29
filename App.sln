@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataModel", "DataModel\DataModel.csproj", "{53DACDCE-6F4F-472B-ADF8-C52328E35009}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDP", "IDP\IDP.csproj", "{2EEC7991-D39C-4695-B15D-0FC7F63B61F6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{53DACDCE-6F4F-472B-ADF8-C52328E35009}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53DACDCE-6F4F-472B-ADF8-C52328E35009}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53DACDCE-6F4F-472B-ADF8-C52328E35009}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2EEC7991-D39C-4695-B15D-0FC7F63B61F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2EEC7991-D39C-4695-B15D-0FC7F63B61F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2EEC7991-D39C-4695-B15D-0FC7F63B61F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2EEC7991-D39C-4695-B15D-0FC7F63B61F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
