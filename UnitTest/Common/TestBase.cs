@@ -29,10 +29,10 @@ namespace UnitTest.Common
             var services = new ServiceCollection();
 
             // Services
-            services.AddMediatR();
+            services.AddMediatR(typeof(Startup));
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddMvc().AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
-            services.AddAutoMapper();
+            services.AddAutoMapper(typeof(Startup));
 
 
             // Database

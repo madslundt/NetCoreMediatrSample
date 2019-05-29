@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +14,7 @@ namespace API.Infrastructure.Pipeline
             _logger = logger;
         }
 
-        public async Task Process(TRequest request, TResponse response)
+        public async Task Process(TRequest request, TResponse response, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Handled {typeof(TRequest).FullName}", new
             {
