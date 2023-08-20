@@ -1,4 +1,4 @@
-The project has been developed using .NET 7 and C# 9, demonstrating a fusion of monolithic architecture principles with microservices methodologies. It follows a structured approach, segmenting the project into distinct domains to achieve a well-organized and scalable system.
+The project has been developed using .NET 7, demonstrating a fusion of monolithic architecture principles with microservices methodologies. It follows a structured approach, segmenting the project into distinct domains to achieve a well-organized and scalable system.
 
 The example undertaking comprises of both users and their corresponding tasks.
 A user is described by an id, a status, as well as their first and last name.
