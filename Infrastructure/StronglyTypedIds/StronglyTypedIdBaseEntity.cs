@@ -2,42 +2,44 @@ namespace Infrastructure.StronglyTypedIds;
 
 public abstract record StronglyTypedIdBaseEntity
 {
-    private readonly string _prefix;
+    public string Prefix { get; } = null!;
     public string Value { get; }
 
-    public override string ToString() => Value;
-
-    protected StronglyTypedIdBaseEntity(string prefix, string? value = null)
+    protected StronglyTypedIdBaseEntity(string prefix, string value)
     {
-        if (string.IsNullOrEmpty(prefix))
+        if (string.IsNullOrWhiteSpace(prefix))
         {
             throw new InvalidStronglyTypedIdException($"{nameof(prefix)} is not defined");
         }
 
-        if (value == null)
+        if (string.IsNullOrWhiteSpace(value))
         {
-            throw new InvalidStronglyTypedIdException($"{nameof(value)} must have a value");
+            throw new InvalidStronglyTypedIdException($"{nameof(value)} is not defined");
         }
 
-        _prefix = prefix;
-        Value = string.IsNullOrEmpty(value)
-            ? $"{_prefix}{Ulid.NewUlid().ToString().ToLowerInvariant()}"
-            : value.ToLowerInvariant();
+        Prefix = prefix;
+        Value = value.ToLowerInvariant();
+    }
+
+    public static T New<T>() where T : StronglyTypedIdBaseEntity
+    {
+        var newId = (T) Activator.CreateInstance(typeof(T), Ulid.NewUlid().ToString())!;
+        var id = $"{newId.Prefix}{newId.Value}";
+        return (T) Activator.CreateInstance(typeof(T), id)!;
     }
 
     public string GetPlaceholder()
     {
-        return $"{_prefix}{new string('x', Ulid.NewUlid().ToString().Length)}";
+        return $"{Prefix}{new string('x', Ulid.NewUlid().ToString().Length)}";
     }
 
     public bool IsValid()
     {
-        if (string.IsNullOrWhiteSpace(_prefix) ||
-            !Value.StartsWith(_prefix, StringComparison.InvariantCultureIgnoreCase))
+        if (!Value.StartsWith(Prefix, StringComparison.InvariantCultureIgnoreCase))
         {
             return false;
         }
 
-        return Ulid.TryParse(Value.Substring(_prefix.Length), out _);
+        return Ulid.TryParse(Value.Substring(Prefix.Length), out _);
     }
 };

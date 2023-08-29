@@ -1,4 +1,3 @@
-using System.Reflection;
 using Infrastructure.StronglyTypedIds;
 
 namespace DataModel.Models;
@@ -9,7 +8,7 @@ namespace DataModel.Models;
 /// <typeparam name="TId">Strongly typed id type</typeparam>
 public abstract class BaseModel<TId> where TId : StronglyTypedIdBaseEntity
 {
-    public TId Id { get; } = (TId) Activator.CreateInstance(typeof(TId), "")!;
+    public TId Id { get; } = StronglyTypedIdBaseEntity.New<TId>();
 
     public DateTime CreatedUtc { get; } = DateTime.UtcNow;
 }

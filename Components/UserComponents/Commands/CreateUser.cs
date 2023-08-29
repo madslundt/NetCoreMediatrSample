@@ -45,7 +45,16 @@ public class CreateUser
                 LastName = request.LastName
             };
 
-            _db.Add(user);
+            try
+            {
+                _db.Add(user);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
             var @event = new UserCreatedEvent
             {
                 UserId = user.Id
