@@ -63,7 +63,7 @@ public class CreateUser
 
             var result = new Result
             {
-                Id = user.Id.Value
+                Id = user.Id.ToString()
             };
 
             return result;

@@ -60,7 +60,7 @@ public class CreateUserTask
 
             var result = new Result
             {
-                Id = task.Id.Value
+                Id = task.Id.ToString()
             };
 
             return result;

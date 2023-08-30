@@ -9,7 +9,7 @@ public static class StronglyTypedIdExtensions
         where TProperty : StronglyTypedIdBaseEntity?
     {
         return property.HasConversion(
-            id => id != null ? id.Value : null,
+            id => id != null ? id.ToString() : null,
             value => value != null ? (TProperty) Activator.CreateInstance(typeof(TProperty), value) : null
         );
     }

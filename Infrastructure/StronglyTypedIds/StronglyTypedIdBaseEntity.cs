@@ -5,7 +5,7 @@ public abstract record StronglyTypedIdBaseEntity
     public string Prefix { get; } = null!;
     public string Value { get; }
 
-    public override string ToString() => Value;
+    public sealed override string ToString() => Value;
 
     protected StronglyTypedIdBaseEntity(string prefix, string value)
     {
