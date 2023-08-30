@@ -10,7 +10,7 @@ public static class StronglyTypedIdValidator
         ruleBuilder.Must((_, id, _) => !string.IsNullOrWhiteSpace(id) &&
                                        ((TId) Activator.CreateInstance(typeof(TId), id)!).IsValid())
             .WithMessage(
-                $"Id is not valid");
+                $"Id is not valid. Valid format is {StronglyTypedIdBaseEntity.GetPlaceholder<TId>()}");
     }
 
     public static void OptionalIdMustBeValid<TId, T>(this IRuleBuilder<T, string?> ruleBuilder)
@@ -19,6 +19,6 @@ public static class StronglyTypedIdValidator
         ruleBuilder.Must((_, id, _) =>
                 string.IsNullOrWhiteSpace(id) || ((TId) Activator.CreateInstance(typeof(TId), id)!).IsValid())
             .WithMessage(
-                $"Id is not valid");
+                $"Id is not valid. Valid format is {StronglyTypedIdBaseEntity.GetPlaceholder<TId>()}");
     }
 }

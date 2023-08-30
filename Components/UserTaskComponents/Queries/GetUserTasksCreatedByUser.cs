@@ -66,7 +66,7 @@ public class GetUserTasksCreatedByUser
                 {
                     Title = task.Title,
                     Description = task.Description,
-                    AssignedToUserId = task.AssignedToUserId != null ? task.AssignedToUserId.ToString() : null,
+                    AssignedToUserId = task.AssignedToUserId.Value
                 };
 
             var result = await query.ToListAsync(cancellationToken);

@@ -5,6 +5,8 @@ public abstract record StronglyTypedIdBaseEntity
     public string Prefix { get; } = null!;
     public string Value { get; }
 
+    public override string ToString() => Value;
+
     protected StronglyTypedIdBaseEntity(string prefix, string value)
     {
         if (string.IsNullOrWhiteSpace(prefix))
@@ -23,14 +25,15 @@ public abstract record StronglyTypedIdBaseEntity
 
     public static T New<T>() where T : StronglyTypedIdBaseEntity
     {
-        var newId = (T) Activator.CreateInstance(typeof(T), Ulid.NewUlid().ToString())!;
-        var id = $"{newId.Prefix}{newId.Value}";
+        var instance = (T) Activator.CreateInstance(typeof(T), Ulid.NewUlid().ToString())!;
+        var id = $"{instance.Prefix}{instance.Value}";
         return (T) Activator.CreateInstance(typeof(T), id)!;
     }
 
-    public string GetPlaceholder()
+    public static string GetPlaceholder<T>() where T : StronglyTypedIdBaseEntity
     {
-        return $"{Prefix}{new string('x', Ulid.NewUlid().ToString().Length)}";
+        var instance = (T) Activator.CreateInstance(typeof(T), Ulid.NewUlid().ToString())!;
+        return $"{instance.Prefix}{new string('x', instance.Value.Length)}";
     }
 
     public bool IsValid()
