@@ -60,7 +60,7 @@ public class GetUserTasksCreatedByUser
         private async Task<ICollection<Result.UserTaskResult>> GetAvailableTasksFromUser(UserId userId,
             CancellationToken cancellationToken)
         {
-            var query = from task in _db.Tasks
+            var query = from task in _db.UserTasks
                 where task.CreatedByUserId == userId && task.StatusEnum != TaskStatusEnum.Removed
                 select new Result.UserTaskResult
                 {

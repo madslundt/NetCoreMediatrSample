@@ -54,7 +54,7 @@ public class DeleteUserTask
 
         private async Task<UserTask?> GetTask(UserTaskId userTaskId, CancellationToken cancellationToken)
         {
-            var query = from task in _db.Tasks
+            var query = from task in _db.UserTasks
                 where task.Id == userTaskId && task.StatusEnum != TaskStatusEnum.Removed
                 select task;
 

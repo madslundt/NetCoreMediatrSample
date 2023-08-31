@@ -3,9 +3,9 @@ using Infrastructure.CQRS.Events;
 
 namespace EventHandlers.UserEventHandlers;
 
-public class UserDeletedEventHandler : IEventHandler<UserDeletedEvent>
+public class LogUserDeletedEventHandler : IEventHandler<UserDeletedEvent>
 {
-    public UserDeletedEventHandler()
+    public LogUserDeletedEventHandler()
     {
     }
 
