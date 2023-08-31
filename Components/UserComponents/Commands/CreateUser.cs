@@ -10,8 +10,8 @@ public class CreateUser
 {
     public class Command : ICommand<Result>
     {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
+        public string FirstName { get; init; } = null!;
+        public string LastName { get; init; } = null!;
     }
 
     public class CreateUserValidator : AbstractValidator<Command>

@@ -45,4 +45,4 @@ public abstract record StronglyTypedIdBaseEntity
 
         return Ulid.TryParse(Value.Substring(Prefix.Length), out _);
     }
-};
+}

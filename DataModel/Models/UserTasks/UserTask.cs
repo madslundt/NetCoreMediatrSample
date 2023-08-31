@@ -4,7 +4,7 @@ using Infrastructure.StronglyTypedIds;
 
 namespace DataModel.Models.UserTasks;
 
-public record UserTaskId(string? Value) : StronglyTypedIdBaseEntity("ut_", Value);
+public record UserTaskId(string Value) : StronglyTypedIdBaseEntity("ut_", Value);
 
 public class UserTask : BaseModel<UserTaskId>
 {
