@@ -18,10 +18,13 @@ public class CreateUserTask
         public string? AssignedUserId { get; init; }
     }
 
-    public class CreateTaskValidator : AbstractValidator<Command>
+    public class CreateUserTaskValidator : AbstractValidator<Command>
     {
-        public CreateTaskValidator()
+        public CreateUserTaskValidator()
         {
+            RuleFor(command => command.Title).NotEmpty();
+            RuleFor(command => command.Description).NotEmpty();
+            RuleFor(command => command.UserId).IdMustBeValid<UserId, Command>();
             RuleFor(command => command.UserId).IdMustBeValid<UserId, Command>();
             RuleFor(command => command.AssignedUserId).OptionalIdMustBeValid<UserId, Command>();
         }
