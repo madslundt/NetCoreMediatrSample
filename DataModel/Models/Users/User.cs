@@ -12,7 +12,7 @@ public class User : BaseModel<UserId>
     public string LastName { get; set; } = null!;
 
     public UserStatusRef StatusRef { get; set; } = null!;
-    public UserStatusEnum StatusEnum { get; set; }
+    public UserStatusEnum StatusEnum { get; set; } = UserStatusEnum.Active;
 
     public ICollection<UserTask> CreatedUserTasks { get; set; }
     public ICollection<UserTask> AssignedToUserTasks { get; set; }
