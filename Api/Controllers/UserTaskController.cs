@@ -28,7 +28,7 @@ public class UserTaskController : ControllerBase
     {
         var result = await _commandBus.Send(command, cancellationToken);
 
-        return Created($"/api/tasks/{result.Id}", result);
+        return Created($"/api/user-tasks/{result.Id}", result);
     }
 
     [HttpGet, Route("{userTaskId}", Name = nameof(GetUserTask))]
