@@ -25,7 +25,6 @@ public class CreateUserTask
             RuleFor(command => command.Title).NotEmpty();
             RuleFor(command => command.Description).NotEmpty();
             RuleFor(command => command.UserId).IdMustBeValid<UserId, Command>();
-            RuleFor(command => command.UserId).IdMustBeValid<UserId, Command>();
             RuleFor(command => command.AssignedUserId).OptionalIdMustBeValid<UserId, Command>();
         }
     }
