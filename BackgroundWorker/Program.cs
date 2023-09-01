@@ -26,5 +26,5 @@ builder.Services
 var app = builder.Build();
 
 app
-    .UseHangfireUI("")
+    .UseHangfireUI("/hangfire")
     .Run();
