@@ -12,6 +12,7 @@ The project has been structured into different domains:
 - [**Events** ](#Events)
 - [**EventHandlers** ](#EventHandlers)
 - [**Infrastructure** ](#Infrastructure)
+- [**BackgroundWorker**](#BackgroundWorker)
 
 Overall, the project exemplifies a well-considered architectural approach that combines the advantages of both monolithic and microservices paradigms, fostering modularity, maintainability, and scalability.
 
@@ -20,6 +21,7 @@ The project leverages essential external dependencies:
 - **Ulid**: This library provides unique identifiers that serve as primary keys in the database, contributing to data integrity and accuracy.
 - **Mediatr**: As an in-process messaging framework, Mediatr streamlines communication between components, minimizing dependencies and enhancing efficiency.
 - **FluentValidation**: By ensuring proper validation of incoming requests, FluentValidation contributes to the reliability of the application's data handling.
+- **Hangfire**: Permits the application to execute background processing essential for event management.
 
 ## Generating strongly typed ids
 A distinctive aspect of the project is the use of strongly typed IDs, which are employed as unique identifiers throughout the database. These IDs are prefixed with the corresponding domain abbreviation, mitigating potential errors when dealing with foreign keys and database joins—drawing inspiration from the concept of Stripes object IDs.
@@ -48,3 +50,6 @@ Event handlers play a crucial role in responding to events propagated within the
 The "Infrastructure" section addresses cross-cutting concerns and setup tasks. This includes implementing authentication, Cross-Origin Resource Sharing (CORS), middleware, and more. Notably, the infrastructure layer incorporates the concepts of CQRS, employing a mediator, command, query, and event bus pattern to facilitate communication and interaction between components.
 
 Lastly, the inclusion of Swagger for API documentation enhances the project's usability and developer experience by providing clear insights into the API's structure and endpoints.
+
+## BackgroundWorker
+A background worker serves the purpose of event management. Events are employed to manage side effects, and consequently, we aim to prevent events from obstructing endpoint execution. In this project, Hangfire is employed, and to reduce the workload on the API instance, it has been relocated to a separate instance. This can be effortlessly accomplished by leveraging the infrastructure to configure its dependencies.  
