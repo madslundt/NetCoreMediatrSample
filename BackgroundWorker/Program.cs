@@ -14,7 +14,6 @@ var hangfireConnectionString = builder.Configuration.GetConnectionString(Backgro
 var dataModelConnectionString = builder.Configuration.GetConnectionString(DataModelOptions.ConnectionString) ??
                                 throw new Exception(
                                     $"{DataModelOptions.ConnectionString} is not found in configuration");
-Console.WriteLine(hangfireConnectionString);
 
 builder.Services
     .AddDataModel(dataModelConnectionString)
