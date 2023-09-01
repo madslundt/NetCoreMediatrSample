@@ -1,6 +1,4 @@
-using System.Reflection;
 using FluentValidation;
-using Infrastructure.CQRS.BackgroundJob;
 using Infrastructure.CQRS.Commands;
 using Infrastructure.CQRS.Events;
 using Infrastructure.CQRS.Queries;
@@ -16,23 +14,18 @@ public static class CQRSExtensions
     public static IServiceCollection AddCQRS(this IServiceCollection services)
     {
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        
-        services.AddMediatR(options =>
-        {
-            options.RegisterServicesFromAssemblies(assemblies);
-        });
-        
+
+        services.AddMediatR(options => { options.RegisterServicesFromAssemblies(assemblies); });
+
         services.AddValidatorsFromAssemblies(assemblies);
 
         services.AddScoped<ICommandBus, CommandBus>();
         services.AddScoped<IQueryBus, QueryBus>();
         services.AddScoped<IEventBus, EventBus>();
-        services.AddScoped<IBackgroundJobBus, BackgroundJobBus>();
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddScoped<ExceptionHandlingMiddleware>();
 
-        
 
         // TODO
         // services.AddHealthChecks();

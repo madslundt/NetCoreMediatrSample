@@ -1,0 +1,41 @@
+version: '3.5'
+
+services:
+  db:
+   image: mcr.microsoft.com/azure-sql-edge:latest
+   cap_add: [ 'SYS_PTRACE' ]
+   container_name: db
+   restart: on-failure
+   environment:
+    - "ACCEPT_EULA=1"
+    - "MSSQL_SA_PASSWORD=pass123!"
+    - "MSSQL_PID=Developer"
+    - "MSSQL_USER=SA"
+   ports:
+    - "1433:1433"
+
+  api:
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    container_name: api
+    restart: unless-stopped
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+
+  background-worker:
+    build:
+      context: .
+      dockerfile: BackgroundWorker/Dockerfile
+    container_name: background-worker
+    restart: unless-stopped
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+    ports:
+      - "81:80"
+    depends_on:
+      - db

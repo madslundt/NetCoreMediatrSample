@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DataModel;
@@ -11,9 +10,7 @@ public static class DataModelExtensions
         services.AddDbContext<DatabaseContext>(
             options =>
             {
-                // options.UseSqlServer(connectionString);
-                options.UseInMemoryDatabase("MyDb");
-                options.ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                options.UseSqlServer(connectionString);
             });
 
         return services;

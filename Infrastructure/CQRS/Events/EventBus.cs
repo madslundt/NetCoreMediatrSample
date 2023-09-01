@@ -1,3 +1,4 @@
+using Infrastructure.BackgroundJob;
 using MediatR;
 
 namespace Infrastructure.CQRS.Events;
@@ -5,11 +6,12 @@ namespace Infrastructure.CQRS.Events;
 public sealed class EventBus : IEventBus
 {
     private readonly IMediator _mediator;
+    private readonly IBackgroundJobBus? _backgroundJobBus;
 
-    public EventBus(IMediator mediator)
+    public EventBus(IMediator mediator, IBackgroundJobBus? backgroundJobBus)
     {
-        _mediator = mediator ?? throw new Exception($"Missing dependency '{nameof(IMediator)}'");
-        ;
+        _mediator = mediator;
+        _backgroundJobBus = backgroundJobBus;
     }
 
     public async Task Commit(params IEvent[] events)
@@ -22,20 +24,18 @@ public sealed class EventBus : IEventBus
 
     private async Task Commit(IEvent @event)
     {
-        // TODO
-        // if (_outboxListener != null)
-        // {
-        //     await _outboxListener.Commit(@event);
-        // }
-        // else if (_eventListener != null)
-        // {
-        //     await _eventListener.Publish(@event);
-        // }
-        // else
-        // {
-        //     throw new ArgumentNullException("No event listener found");
-        // }
+        if (_backgroundJobBus is null)
+        {
+            PublishEvent(@event);
+        }
+        else
+        {
+            await _backgroundJobBus.Enqueue(() => PublishEvent(@event));
+        }
+    }
 
-        await _mediator.Publish(@event);
+    public void PublishEvent(IEvent @event)
+    {
+        _mediator.Publish(@event);
     }
 }

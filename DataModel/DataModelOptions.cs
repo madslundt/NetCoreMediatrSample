@@ -2,5 +2,5 @@ namespace DataModel;
 
 public class DataModelOptions
 {
-    public string ConnectionString { get; set; }
+    public static readonly string ConnectionString = "DataModelConnectionString";
 }
