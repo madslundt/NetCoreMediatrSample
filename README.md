@@ -1,5 +1,7 @@
 The project has been developed using .NET 7, demonstrating a fusion of monolithic architecture principles with microservices methodologies. It follows a structured approach, segmenting the project into distinct domains to achieve a well-organized and scalable system.
 
+[My Medium article that references this repository](https://medium.com/@madslundt/how-to-write-a-well-structured-api-from-the-beginning-1b15992e09ce)
+
 The example undertaking comprises of both users and their corresponding tasks.
 A user is described by an id, a status, as well as their first and last name.
 A user's task is outlined by an id, a status, a title, a description, an author (the user), and potentially an assigned user identification number.
