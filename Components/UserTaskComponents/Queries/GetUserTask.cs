@@ -13,7 +13,7 @@ public class GetUserTask
 {
     public class Query : IQuery<Result>
     {
-        public string? UserTaskId { get; init; } = null!;
+        public string UserTaskId { get; init; } = null!;
     }
 
     public class GetUserValidator : AbstractValidator<Query>

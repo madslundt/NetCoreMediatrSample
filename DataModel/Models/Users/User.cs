@@ -14,6 +14,6 @@ public class User : BaseModel<UserId>
     public UserStatusRef StatusRef { get; set; } = null!;
     public UserStatusEnum StatusEnum { get; set; } = UserStatusEnum.Active;
 
-    public ICollection<UserTask> CreatedUserTasks { get; set; }
-    public ICollection<UserTask> AssignedToUserTasks { get; set; }
+    public ICollection<UserTask> CreatedUserTasks { get; set; } = null!;
+    public ICollection<UserTask> AssignedToUserTasks { get; set; } = null!;
 }

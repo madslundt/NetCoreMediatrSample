@@ -8,15 +8,14 @@ using Infrastructure.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var hangfireConnectionString = builder.Configuration.GetConnectionString(BackgroundJobOptions.ConnectionString) ??
-                               throw new Exception(
-                                   $"{BackgroundJobOptions.ConnectionString} is not found in configuration");
-
 var dataModelConnectionString = builder.Configuration.GetConnectionString(DataModelOptions.ConnectionString) ??
                                 throw new Exception(
                                     $"{DataModelOptions.ConnectionString} is not found in configuration");
 
-// Add services to the container.
+var hangfireConnectionString = builder.Configuration.GetConnectionString(BackgroundJobOptions.ConnectionString) ??
+                               throw new Exception(
+                                   $"{BackgroundJobOptions.ConnectionString} is not found in configuration");
+
 builder.Services
     .AddSwagger()
     .AddComponents()
@@ -30,14 +29,13 @@ builder.Services.AddCorsPolicy(allowAllOrigins);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     app.UseCorsPolicy(allowAllOrigins);
     app.UseSwaggerWithUI();
 }
 
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app
     .UseCQRS()

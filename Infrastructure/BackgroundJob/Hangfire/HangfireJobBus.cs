@@ -14,13 +14,15 @@ public class HangfireJobBus : IBackgroundJobBus
     }
 
     [DisplayName("{0}")]
-    public async Task Enqueue(Expression<Action> methodCall)
+    public Task Enqueue(Expression<Action> methodCall)
     {
         _backgroundJobClient.Enqueue(methodCall);
+        return Task.CompletedTask;
     }
 
-    public async Task Schedule(Expression<Action> methodCall, TimeSpan timeSpan)
+    public Task Schedule(Expression<Action> methodCall, TimeSpan timeSpan)
     {
         _backgroundJobClient.Schedule(methodCall, timeSpan);
+        return Task.CompletedTask;
     }
 }

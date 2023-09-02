@@ -9,8 +9,9 @@ public class LogUserCreatedEventHandler : IEventHandler<UserCreatedEvent>
     {
     }
 
-    public async Task Handle(UserCreatedEvent @event, CancellationToken cancellationToken)
+    public Task Handle(UserCreatedEvent @event, CancellationToken cancellationToken)
     {
         Console.WriteLine($"Created with id '{@event.UserId}' created");
+        return Task.CompletedTask;
     }
 }

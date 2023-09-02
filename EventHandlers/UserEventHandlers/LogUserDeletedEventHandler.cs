@@ -9,8 +9,9 @@ public class LogUserDeletedEventHandler : IEventHandler<UserDeletedEvent>
     {
     }
 
-    public async Task Handle(UserDeletedEvent @event, CancellationToken cancellationToken)
+    public Task Handle(UserDeletedEvent @event, CancellationToken cancellationToken)
     {
         Console.WriteLine($"User with id '{@event.UserId}' deleted");
+        return Task.CompletedTask;
     }
 }

@@ -21,7 +21,7 @@ services:
     container_name: api
     restart: unless-stopped
     environment:
-      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_ENVIRONMENT=DockerDevelopment"
     ports:
       - "80:80"
     depends_on:
@@ -34,7 +34,7 @@ services:
     container_name: background-worker
     restart: unless-stopped
     environment:
-      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_ENVIRONMENT=DockerDevelopment"
     ports:
       - "81:80"
     depends_on:
