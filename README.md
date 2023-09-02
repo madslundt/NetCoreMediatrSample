@@ -27,7 +27,7 @@ Once the databases are established, it's essential to apply the necessary migrat
 ```bash
 dotnet ef database update
 ```
-*Please ensure that you have correctly configured the ASPNETCORE_ENVIRONMENT environment variable to correspond with the appropriate appsettings configuration. To use the default configuration, set the environment variable to "Development".
+*Please ensure that you have correctly configured the ASPNETCORE_ENVIRONMENT environment variable to correspond with the appropriate appsettings configuration. To use the default configuration, set the environment variable to "Development".*
 
 # Project structure
 The project has been structured into different domains:
