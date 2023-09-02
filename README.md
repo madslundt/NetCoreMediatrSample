@@ -6,6 +6,29 @@ The example undertaking comprises of both users and their corresponding tasks.
 A user is described by an id, a status, as well as their first and last name.
 A user's task is outlined by an id, a status, a title, a description, an author (the user), and potentially an assigned user identification number.
 
+# Run application
+To execute the project, you must ensure that Docker is properly installed. Subsequently, you can initiate the project by executing the following command from the project's root directory:
+```bash
+docker-compose up
+```
+This command will initialize the API, the background worker, and a SQL Server database. The API will be accessible on port 80, and the Hangfire dashboard will be accessible on port 81.
+
+If you prefer to selectively run specific services, such as just the SQL Server database, you can achieve this by executing the following command:
+```bash
+docker-compose start db
+```
+
+Before commencing the API, it is crucial to verify the creation of databases and the successful execution of migrations.
+After successfully setting up the database, two databases should be established:
+1. One database is designated for the API and is typically named 'app' by default in the appsettings.json file. You have the flexibility to change this name as necessary.
+2. Another database is allocated for the Background worker, and it is typically named 'jobs' in the appsettings.json file. You can adjust this name to suit your requirements.
+
+Once the databases are established, it's essential to apply the necessary migrations. This can be accomplished by navigating to the DataModel directory and executing the subsequent command:
+```bash
+dotnet ef database update
+```
+*Please ensure that you have correctly configured the ASPNETCORE_ENVIRONMENT environment variable to correspond with the appropriate appsettings configuration. To use the default configuration, set the environment variable to "Development".
+
 # Project structure
 The project has been structured into different domains:
 - [**Api**](#Api)
@@ -54,4 +77,4 @@ The "Infrastructure" section addresses cross-cutting concerns and setup tasks. T
 Lastly, the inclusion of Swagger for API documentation enhances the project's usability and developer experience by providing clear insights into the API's structure and endpoints.
 
 ## BackgroundWorker
-A background worker serves the purpose of event management. Events are employed to manage side effects, and consequently, we aim to prevent events from obstructing endpoint execution. In this project, Hangfire is employed, and to reduce the workload on the API instance, it has been relocated to a separate instance. This can be effortlessly accomplished by leveraging the infrastructure to configure its dependencies.  
+A background worker serves the purpose of event management. Events are employed to manage side effects, and consequently, we aim to prevent events from obstructing endpoint execution. In this project, Hangfire is employed, and to reduce the workload on the API instance, it has been relocated to a separate instance. This can be effortlessly accomplished by leveraging the infrastructure to configure its dependencies.

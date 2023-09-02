@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace DataModel;
 
@@ -7,9 +8,20 @@ public class DatabaseContextFactory : IDesignTimeDbContextFactory<DatabaseContex
 {
     public DatabaseContext CreateDbContext(string[] args)
     {
-        var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-        optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionString"));
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(@Directory.GetCurrentDirectory() + $"/../Api/appsettings.json")
+            .AddJsonFile(@Directory.GetCurrentDirectory() + $"/../Api/appsettings.{environment}.json", true)
+            .Build();
+        var builder = new DbContextOptionsBuilder<DatabaseContext>();
 
-        return new DatabaseContext(optionsBuilder.Options);
+        var connectionString = configuration.GetConnectionString(DataModelOptions.ConnectionString) ??
+                               throw new Exception(
+                                   $"{DataModelOptions.ConnectionString} is not found in configuration");
+
+        builder.UseSqlServer(connectionString);
+
+        return new DatabaseContext(builder.Options);
     }
 }
