@@ -4,6 +4,8 @@ namespace Infrastructure.BackgroundJob;
 
 public interface IBackgroundJobBus
 {
-    Task Enqueue(Expression<Action> methodCall);
-    Task Schedule(Expression<Action> methodCall, TimeSpan timeSpan);
+    Task<string> Enqueue(Expression<Action> methodCall);
+    Task<string> Schedule(Expression<Action> methodCall, TimeSpan timeSpan);
+    Task<string> EnqueueAfter(string jobId, Expression<Action> methodCall);
+
 }

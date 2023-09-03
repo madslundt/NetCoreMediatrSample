@@ -14,15 +14,39 @@ public class HangfireJobBus : IBackgroundJobBus
     }
 
     [DisplayName("{0}")]
-    public Task Enqueue(Expression<Action> methodCall)
+    public Task<string> Enqueue(Expression<Action> methodCall)
     {
-        _backgroundJobClient.Enqueue(methodCall);
+        var jobId = _backgroundJobClient.Enqueue(methodCall);
+        return Task.FromResult(jobId);
+    }
+
+    public Task<string> Schedule(Expression<Action> methodCall, TimeSpan timeSpan)
+    {
+        var jobId = _backgroundJobClient.Schedule(methodCall, timeSpan);
+        return Task.FromResult(jobId);
+    }
+
+    public Task<string> EnqueueAfter(string jobId, Expression<Action> methodCall)
+    {
+        var newJobId = _backgroundJobClient.ContinueJobWith(jobId, methodCall);
+        return Task.FromResult(newJobId);
+    }
+
+    public static Task AddRecurringJob(string jobId, Expression<Action> methodCall, string cron)
+    {
+        RecurringJob.AddOrUpdate(jobId, methodCall, cron);
         return Task.CompletedTask;
     }
 
-    public Task Schedule(Expression<Action> methodCall, TimeSpan timeSpan)
+    public static Task RemoveRecurringJob(string jobId)
     {
-        _backgroundJobClient.Schedule(methodCall, timeSpan);
+        RecurringJob.RemoveIfExists(jobId);
+        return Task.CompletedTask;
+    }
+
+    public static Task StartRecurringJob(string jobId)
+    {
+        RecurringJob.TriggerJob(jobId);
         return Task.CompletedTask;
     }
 }
