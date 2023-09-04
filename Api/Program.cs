@@ -42,3 +42,8 @@ app
     .MapControllers();
 
 app.Run();
+
+// Needed for Api.IntegrationTests project
+public partial class Program
+{
+}

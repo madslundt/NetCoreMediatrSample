@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel", "DataModel\Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundWorker", "BackgroundWorker\BackgroundWorker.csproj", "{3E5FB4CE-4E33-4562-BDCA-C6C6D395209D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Components.UnitTests", "Components.UnitTests\Components.UnitTests.csproj", "{FE4232B9-16E0-4454-B179-C2EEDC5F39A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.IntegrationTests", "Api.IntegrationTests\Api.IntegrationTests.csproj", "{26458907-18B0-4302-9884-CBB25AB83264}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +52,13 @@ Global
 		{3E5FB4CE-4E33-4562-BDCA-C6C6D395209D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E5FB4CE-4E33-4562-BDCA-C6C6D395209D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E5FB4CE-4E33-4562-BDCA-C6C6D395209D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE4232B9-16E0-4454-B179-C2EEDC5F39A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE4232B9-16E0-4454-B179-C2EEDC5F39A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE4232B9-16E0-4454-B179-C2EEDC5F39A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE4232B9-16E0-4454-B179-C2EEDC5F39A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26458907-18B0-4302-9884-CBB25AB83264}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26458907-18B0-4302-9884-CBB25AB83264}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26458907-18B0-4302-9884-CBB25AB83264}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26458907-18B0-4302-9884-CBB25AB83264}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
