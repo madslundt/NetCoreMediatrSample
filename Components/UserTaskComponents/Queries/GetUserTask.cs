@@ -16,9 +16,9 @@ public class GetUserTask
         public string UserTaskId { get; init; } = null!;
     }
 
-    public class GetUserValidator : AbstractValidator<Query>
+    public class GetUserTaskValidator : AbstractValidator<Query>
     {
-        public GetUserValidator()
+        public GetUserTaskValidator()
         {
             RuleFor(query => query.UserTaskId)!.IdMustBeValid<UserTaskId, Query>();
         }

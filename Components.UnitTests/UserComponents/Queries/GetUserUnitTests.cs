@@ -4,9 +4,9 @@ using DataModel;
 using DataModel.Models.Refs.UserStatusRefs;
 using DataModel.Models.Users;
 using FluentAssertions;
+using FluentValidation.TestHelper;
 using Infrastructure.ExceptionHandling.Exceptions;
 using Infrastructure.StronglyTypedIds;
-using ValidationException = FluentValidation.ValidationException;
 
 namespace Components.UnitTests.UserComponents.Queries;
 
@@ -16,19 +16,19 @@ public class GetUserUnitTests : BaseUnitTest
     [InlineData("Not valid id")]
     [InlineData("123456789")]
     [InlineData("us_123456789")]
+    [InlineData("un_01h9h119dmpapchz8ap7x1f26b")]
     [InlineData(null)]
-    public void GetUserValidator_Should_ThrowValidationError_When_IdIsNotValid(string userId)
+    public void GetUserValidator_Should_ThrowValidationError_When_UserIdIsNotValid(string userId)
     {
         var query = new GetUser.Query
         {
             UserId = userId
         };
 
-        using var db = new DatabaseContext(DbContextOptions);
-        var handler = new GetUser.Handler(db);
-        var act = () => handler.Handle(query, CancellationToken.None);
+        var validator = new GetUser.GetUserValidator();
+        var result = validator.TestValidate(query);
 
-        act.Should().ThrowAsync<ValidationException>();
+        result.ShouldHaveValidationErrorFor(q => q.UserId);
     }
 
     [Fact]

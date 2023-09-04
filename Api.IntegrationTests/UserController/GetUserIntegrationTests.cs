@@ -20,6 +20,7 @@ public class GetUserTests : BaseIntegrationTest
     [InlineData("Not valid id")]
     [InlineData("123456789")]
     [InlineData("us_123456789")]
+    [InlineData("un_01h9h119dmpapchz8ap7x1f26b")]
     public async Task GetUser_Should_ReturnBadRequest_When_UserIdIsNotValid(string userId)
     {
         var expectedStatusCode = HttpStatusCode.BadRequest;
