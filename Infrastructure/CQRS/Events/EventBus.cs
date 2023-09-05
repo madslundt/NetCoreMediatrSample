@@ -36,6 +36,6 @@ public sealed class EventBus : IEventBus
 
     public void PublishEvent(IEvent @event)
     {
-        _mediator.Publish(@event);
+        Task.Run(async () => await _mediator.Publish(@event)).Wait();
     }
 }

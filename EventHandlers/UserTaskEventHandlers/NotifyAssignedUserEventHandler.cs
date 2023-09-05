@@ -41,6 +41,7 @@ public class NotifyAssignedUserEventHandler : IEventHandler<UserTaskCreatedEvent
     {
         var result = await _db.UserTasks
             .Include(userTask => userTask.CreatedByUser)
+            .Include(userTask => userTask.AssignedToUser)
             .Where(userTask => userTask.Id == userTaskId)
             .FirstOrDefaultAsync(cancellationToken);
 

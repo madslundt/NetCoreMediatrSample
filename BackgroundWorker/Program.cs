@@ -17,8 +17,8 @@ var dataModelConnectionString = builder.Configuration.GetConnectionString(DataMo
 
 builder.Services
     .AddDataModel(dataModelConnectionString)
-    .AddCQRS()
     .AddHangfire(hangfireConnectionString)
+    .AddCQRS()
     .AddEventHandlers()
     .AddHangfireWorker();
 

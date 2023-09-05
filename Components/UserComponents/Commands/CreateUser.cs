@@ -12,6 +12,7 @@ public class CreateUser
     {
         public string FirstName { get; init; } = null!;
         public string LastName { get; init; } = null!;
+        public string Email { get; init; } = null!;
     }
 
     public class CreateUserValidator : AbstractValidator<Command>
@@ -20,6 +21,7 @@ public class CreateUser
         {
             RuleFor(command => command.FirstName).NotEmpty();
             RuleFor(command => command.LastName).NotEmpty();
+            RuleFor(command => command.Email).NotEmpty().EmailAddress();
         }
     }
 
@@ -42,7 +44,8 @@ public class CreateUser
             var user = new User
             {
                 FirstName = request.FirstName,
-                LastName = request.LastName
+                LastName = request.LastName,
+                Email = request.Email
             };
 
             try
