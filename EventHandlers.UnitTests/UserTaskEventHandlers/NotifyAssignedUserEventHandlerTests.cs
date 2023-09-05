@@ -215,6 +215,38 @@ public class NotifyAssignedUserEventHandlerTests : BaseUnitTest
         );
     }
 
+    [Fact]
+    public async Task Handle_ShouldNotSendEmail_When_UserTaskDoesNotExist()
+    {
+        var notificationServiceMock = Substitute.For<INotificationService>();
+        var user = GetUser();
+        var userTask = new Faker<UserTask>()
+            .RuleFor(userTask => userTask.Title, f => f.Lorem.Sentence())
+            .RuleFor(userTask => userTask.Description, f => f.Lorem.Sentences())
+            .RuleFor(userTask => userTask.AssignedToUser, user)
+            .RuleFor(userTask => userTask.CreatedByUser, user)
+            .Generate();
+
+        var @event = new UserTaskCreatedEvent
+        {
+            UserTaskId = userTask.Id
+        };
+
+        using var db = new DatabaseContext(DbContextOptions);
+
+        var handler = new NotifyAssignedUserEventHandler(db, notificationServiceMock);
+
+        // Act
+        await handler.Handle(@event, CancellationToken.None);
+
+        // Assert
+        await notificationServiceMock.DidNotReceive().SendEmail(
+            Arg.Any<string>(),
+            Arg.Any<string>(),
+            Arg.Any<string>()
+        );
+    }
+
     private User GetUser()
     {
         var result = new Faker<User>()
