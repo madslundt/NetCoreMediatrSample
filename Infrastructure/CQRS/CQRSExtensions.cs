@@ -26,10 +26,6 @@ public static class CQRSExtensions
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddScoped<ExceptionHandlingMiddleware>();
 
-
-        // TODO
-        // services.AddHealthChecks();
-
         return services;
     }
 

@@ -4,6 +4,7 @@ using Infrastructure.BackgroundJob;
 using Infrastructure.BackgroundJob.Hangfire;
 using Infrastructure.Cors;
 using Infrastructure.CQRS;
+using Infrastructure.HealthChecks;
 using Infrastructure.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services
     .AddDataModel(dataModelConnectionString)
     .AddHangfire(hangfireConnectionString)
     .AddCQRS()
+    .AddApiHealthChecks()
     .AddControllers();
 
 var allowAllOrigins = "_allowAllOrigins";
@@ -39,6 +41,7 @@ app.UseHttpsRedirection();
 
 app
     .UseCQRS()
+    .UseApiHealthChecks()
     .MapControllers();
 
 app.Run();
