@@ -41,7 +41,7 @@ public class DeleteUser
 
             if (user is null)
             {
-                throw new NotFoundException(nameof(user), userId);
+                throw new NotFoundException(nameof(user), userId.ToString());
             }
 
             _db.Remove(user);

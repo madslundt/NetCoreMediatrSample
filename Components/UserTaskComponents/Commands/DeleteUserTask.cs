@@ -41,7 +41,7 @@ public class DeleteUserTask
 
             if (task is null)
             {
-                throw new NotFoundException(nameof(task), taskId);
+                throw new NotFoundException(nameof(task), taskId.ToString());
             }
 
             _db.Remove(task);

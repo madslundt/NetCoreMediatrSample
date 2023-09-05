@@ -4,7 +4,7 @@ using Infrastructure.StronglyTypedIds;
 
 namespace DataModel.Models.Users;
 
-public record UserId(string Value) : StronglyTypedIdBaseEntity("us_", Value);
+public record UserId(string Value) : StronglyTypedIdBaseEntity<UserId>("us_", Value);
 
 public class User : BaseModel<UserId>
 {

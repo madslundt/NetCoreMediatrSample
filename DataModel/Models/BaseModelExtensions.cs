@@ -7,7 +7,7 @@ namespace DataModel.Models;
 public static class BaseModelExtensions
 {
     public static void AddBaseModelContext<T, TId>(this EntityTypeBuilder<T> builder)
-        where T : BaseModel<TId> where TId : StronglyTypedIdBaseEntity
+        where T : BaseModel<TId> where TId : StronglyTypedIdBaseEntity<TId>
     {
         builder.Property(p => p.Id)
             .SupportStronglyTypedId()

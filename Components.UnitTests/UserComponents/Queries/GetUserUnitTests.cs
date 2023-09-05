@@ -30,13 +30,27 @@ public class GetUserUnitTests : BaseUnitTest
 
         result.ShouldHaveValidationErrorFor(q => q.UserId);
     }
+    
+    [Fact]
+    public void GetUserValidator_Should_NotThrowValidationError_When_UserIdIsValid()
+    {
+        var query = new GetUser.Query
+        {
+            UserId = UserId.New().ToString(),
+        };
+
+        var validator = new GetUser.GetUserValidator();
+        var result = validator.TestValidate(query);
+
+        result.ShouldNotHaveValidationErrorFor(q => q.UserId);
+    }
 
     [Fact]
     public void Handle_Should_ReturnNotFoundException_When_UserIsNotFound()
     {
         var query = new GetUser.Query
         {
-            UserId = StronglyTypedIdBaseEntity.New<UserId>().ToString()
+            UserId = UserId.New().ToString(),
         };
 
         using var db = new DatabaseContext(DbContextOptions);

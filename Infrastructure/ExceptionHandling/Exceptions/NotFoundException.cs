@@ -17,11 +17,6 @@ public class NotFoundException : Exception
     {
     }
 
-    public NotFoundException(string propertyName, StronglyTypedIdBaseEntity id) : base(
-        PropertyIdMessage(propertyName, id.ToString()))
-    {
-    }
-
     public NotFoundException(string message) : base(message)
     {
     }

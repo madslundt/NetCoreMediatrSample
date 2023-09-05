@@ -44,7 +44,7 @@ public class UpdateUserTask
 
             if (task is null)
             {
-                throw new NotFoundException(nameof(task), taskId);
+                throw new NotFoundException(nameof(task), taskId.ToString());
             }
 
             var assignToUserId = new UserId(request.AssignToUserId);

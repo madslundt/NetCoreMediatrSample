@@ -36,7 +36,7 @@ public class GetUserTests : BaseIntegrationTest
     {
         var expectedStatusCode = HttpStatusCode.NotFound;
         
-        var userId = StronglyTypedIdBaseEntity.New<UserId>().ToString();
+        var userId = UserId.New().ToString();
         var response = await Client.GetAsync($"/api/users/{userId}");
         var actualStatusCode = response.StatusCode;
 

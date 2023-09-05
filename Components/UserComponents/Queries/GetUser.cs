@@ -46,7 +46,7 @@ public class GetUser
 
             if (result is null)
             {
-                throw new NotFoundException("User", userId);
+                throw new NotFoundException("User", userId.ToString());
             }
 
             return result;

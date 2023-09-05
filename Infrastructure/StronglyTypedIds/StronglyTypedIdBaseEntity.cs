@@ -1,6 +1,6 @@
 namespace Infrastructure.StronglyTypedIds;
 
-public abstract record StronglyTypedIdBaseEntity
+public abstract record StronglyTypedIdBaseEntity<T> where T : StronglyTypedIdBaseEntity<T>
 {
     public string Prefix { get; } = null!;
     public string Value { get; }
@@ -23,14 +23,14 @@ public abstract record StronglyTypedIdBaseEntity
         Value = value.ToLowerInvariant();
     }
 
-    public static T New<T>() where T : StronglyTypedIdBaseEntity
+    public static T New()
     {
         var instance = (T) Activator.CreateInstance(typeof(T), Ulid.NewUlid().ToString())!;
         var id = $"{instance.Prefix}{instance.Value}";
         return (T) Activator.CreateInstance(typeof(T), id)!;
     }
 
-    public static string GetPlaceholder<T>() where T : StronglyTypedIdBaseEntity
+    public static string GetPlaceholder()
     {
         var instance = (T) Activator.CreateInstance(typeof(T), Ulid.NewUlid().ToString())!;
         return $"{instance.Prefix}{new string('x', instance.Value.Length)}";
