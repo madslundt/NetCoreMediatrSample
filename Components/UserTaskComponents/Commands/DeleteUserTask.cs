@@ -47,7 +47,7 @@ public class DeleteUserTask
             _db.Remove(task);
             var @event = new UserTaskDeletedEvent
             {
-                UserTaskId = taskId,
+                UserTaskId = taskId
             };
             await _db.SaveChangesAndCommitAsync(cancellationToken, @event);
         }

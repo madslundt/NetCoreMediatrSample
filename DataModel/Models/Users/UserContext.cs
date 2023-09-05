@@ -11,7 +11,8 @@ public class UserContext
             b.AddBaseModelContext<User, UserId>();
             b.Property(p => p.FirstName);
             b.Property(p => p.LastName);
-            
+            b.Property(p => p.Email);
+
             b.HasOne(user => user.StatusRef)
                 .WithMany()
                 .HasForeignKey(user => user.StatusEnum)

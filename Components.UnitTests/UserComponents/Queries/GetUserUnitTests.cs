@@ -6,7 +6,6 @@ using DataModel.Models.Users;
 using FluentAssertions;
 using FluentValidation.TestHelper;
 using Infrastructure.ExceptionHandling.Exceptions;
-using Infrastructure.StronglyTypedIds;
 
 namespace Components.UnitTests.UserComponents.Queries;
 
@@ -30,13 +29,13 @@ public class GetUserUnitTests : BaseUnitTest
 
         result.ShouldHaveValidationErrorFor(q => q.UserId);
     }
-    
+
     [Fact]
     public void GetUserValidator_Should_NotThrowValidationError_When_UserIdIsValid()
     {
         var query = new GetUser.Query
         {
-            UserId = UserId.New().ToString(),
+            UserId = UserId.New().ToString()
         };
 
         var validator = new GetUser.GetUserValidator();
@@ -50,7 +49,7 @@ public class GetUserUnitTests : BaseUnitTest
     {
         var query = new GetUser.Query
         {
-            UserId = UserId.New().ToString(),
+            UserId = UserId.New().ToString()
         };
 
         using var db = new DatabaseContext(DbContextOptions);
@@ -66,17 +65,18 @@ public class GetUserUnitTests : BaseUnitTest
         var user = new Faker<User>()
             .RuleFor(user => user.FirstName, f => f.Name.FirstName())
             .RuleFor(user => user.LastName, f => f.Name.LastName())
+            .RuleFor(user => user.Email, f => f.Internet.Email())
             .RuleFor(user => user.StatusEnum, UserStatusEnum.Active)
             .Generate();
         var expectedResult = new GetUser.Result
         {
             FirstName = user.FirstName,
-            LastName = user.LastName,
+            LastName = user.LastName
         };
 
         var query = new GetUser.Query
         {
-            UserId = user.Id.ToString(),
+            UserId = user.Id.ToString()
         };
 
         using var db = new DatabaseContext(DbContextOptions);

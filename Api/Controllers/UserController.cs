@@ -10,8 +10,8 @@ namespace Api.Controllers;
 [Route("/api/users")]
 public class UserController : ControllerBase
 {
-    private readonly IQueryBus _queryBus;
     private readonly ICommandBus _commandBus;
+    private readonly IQueryBus _queryBus;
 
     public UserController(IQueryBus queryBus, ICommandBus commandBus)
     {
@@ -19,11 +19,13 @@ public class UserController : ControllerBase
         _commandBus = commandBus;
     }
 
-    [HttpGet, Route("{userId}", Name = nameof(GetUser))]
+    [HttpGet]
+    [Route("{userId}", Name = nameof(GetUser))]
     public async Task<ActionResult<GetUser.Result>> GetUser([FromRoute] string userId,
         CancellationToken cancellationToken)
     {
-        var query = new GetUser.Query{
+        var query = new GetUser.Query
+        {
             UserId = userId
         };
         var result = await _queryBus.Send(query, cancellationToken);
@@ -31,7 +33,8 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost, Route("", Name = nameof(CreateUser))]
+    [HttpPost]
+    [Route("", Name = nameof(CreateUser))]
     public async Task<ActionResult<CreateUser.Result>> CreateUser(
         [FromBody] CreateUser.Command command,
         CancellationToken cancellationToken
@@ -42,13 +45,15 @@ public class UserController : ControllerBase
         return Created($"/api/users/{result.Id}", result);
     }
 
-    [HttpDelete, Route("{userId}", Name = nameof(DeleteUser))]
+    [HttpDelete]
+    [Route("{userId}", Name = nameof(DeleteUser))]
     public async Task<IActionResult> DeleteUser(
         [FromRoute] string userId,
         CancellationToken cancellationToken
     )
     {
-        var command = new DeleteUser.Command{
+        var command = new DeleteUser.Command
+        {
             UserId = userId
         };
 

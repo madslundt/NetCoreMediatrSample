@@ -6,9 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Events\Events.csproj"/>
-        <ProjectReference Include="..\NotificationService\NotificationService.csproj"/>
-    </ItemGroup>
-
 </Project>

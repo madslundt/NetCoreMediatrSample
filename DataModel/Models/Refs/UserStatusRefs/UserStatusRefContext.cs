@@ -6,9 +6,6 @@ public class UserStatusRefContext
 {
     public static void Build(ModelBuilder builder)
     {
-        builder.Entity<UserStatusRef>(b =>
-        {
-            b.AddBaseModelEnumExtensions<UserStatusRef, UserStatusEnum>();
-        });
+        builder.Entity<UserStatusRef>(b => { b.AddBaseModelEnumExtensions<UserStatusRef, UserStatusEnum>(); });
     }
 }

@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
-using Infrastructure.StronglyTypedIds;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 
 namespace Infrastructure.Swagger;
 
@@ -19,7 +17,6 @@ public static class SwaggerExtensions
             c.IgnoreObsoleteProperties();
             // c.CustomSchemaIds(type => type.FullName);
             c.CustomSchemaIds(type => type.FullName?.Replace("+", "."));
-
         });
 
         return services;

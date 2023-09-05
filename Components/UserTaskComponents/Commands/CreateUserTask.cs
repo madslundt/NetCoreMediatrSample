@@ -50,7 +50,7 @@ public class CreateUserTask
                 Title = request.Title,
                 Description = request.Description,
                 AssignedToUserId = request.AssignedUserId != null ? new UserId(request.AssignedUserId) : null,
-                CreatedByUserId = new UserId(request.UserId),
+                CreatedByUserId = new UserId(request.UserId)
             };
 
             _db.Add(task);

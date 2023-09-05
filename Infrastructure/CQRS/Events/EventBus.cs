@@ -5,8 +5,8 @@ namespace Infrastructure.CQRS.Events;
 
 public sealed class EventBus : IEventBus
 {
-    private readonly IMediator _mediator;
     private readonly IBackgroundJobBus? _backgroundJobBus;
+    private readonly IMediator _mediator;
 
     public EventBus(IMediator mediator, IBackgroundJobBus? backgroundJobBus)
     {

@@ -10,6 +10,7 @@ public class User : BaseModel<UserId>
 {
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
+    public string Email { get; set; } = null!;
 
     public UserStatusRef StatusRef { get; set; } = null!;
     public UserStatusEnum StatusEnum { get; set; } = UserStatusEnum.Active;

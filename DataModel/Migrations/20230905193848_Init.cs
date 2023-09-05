@@ -44,6 +44,7 @@ namespace DataModel.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StatusEnum = table.Column<int>(type: "int", nullable: false),
                     CreatedUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

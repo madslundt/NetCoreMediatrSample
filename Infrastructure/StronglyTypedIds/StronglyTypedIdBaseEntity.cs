@@ -2,11 +2,6 @@ namespace Infrastructure.StronglyTypedIds;
 
 public abstract record StronglyTypedIdBaseEntity<T> where T : StronglyTypedIdBaseEntity<T>
 {
-    public string Prefix { get; } = null!;
-    public string Value { get; }
-
-    public sealed override string ToString() => Value;
-
     protected StronglyTypedIdBaseEntity(string prefix, string value)
     {
         if (string.IsNullOrWhiteSpace(prefix))
@@ -21,6 +16,14 @@ public abstract record StronglyTypedIdBaseEntity<T> where T : StronglyTypedIdBas
 
         Prefix = prefix;
         Value = value.ToLowerInvariant();
+    }
+
+    public string Prefix { get; } = null!;
+    public string Value { get; }
+
+    public sealed override string ToString()
+    {
+        return Value;
     }
 
     public static T New()

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataModel.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230901170747_Init")]
+    [Migration("20230905193848_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -141,6 +141,10 @@ namespace DataModel.Migrations
                     b.Property<DateTime>("CreatedUtc")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()

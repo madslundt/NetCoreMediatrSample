@@ -11,8 +11,8 @@ namespace Api.Controllers;
 [Route("/api/user-tasks")]
 public class UserTaskController : ControllerBase
 {
-    private readonly IQueryBus _queryBus;
     private readonly ICommandBus _commandBus;
+    private readonly IQueryBus _queryBus;
 
     public UserTaskController(IQueryBus queryBus, ICommandBus commandBus)
     {
@@ -20,7 +20,8 @@ public class UserTaskController : ControllerBase
         _commandBus = commandBus;
     }
 
-    [HttpPost, Route("", Name = nameof(CreateUserTask))]
+    [HttpPost]
+    [Route("", Name = nameof(CreateUserTask))]
     public async Task<ActionResult<CreateUserTask.Result>> CreateUserTask(
         [FromBody] CreateUserTask.Command command,
         CancellationToken cancellationToken
@@ -31,7 +32,8 @@ public class UserTaskController : ControllerBase
         return Created($"/api/user-tasks/{result.Id}", result);
     }
 
-    [HttpGet, Route("{userTaskId}", Name = nameof(GetUserTask))]
+    [HttpGet]
+    [Route("{userTaskId}", Name = nameof(GetUserTask))]
     public async Task<ActionResult<GetUserTask.Result>> GetUserTask(
         [FromRoute] string userTaskId,
         CancellationToken cancellationToken
@@ -46,7 +48,8 @@ public class UserTaskController : ControllerBase
         return Ok(result);
     }
 
-    [HttpDelete, Route("{userTaskId}", Name = nameof(DeleteUserTask))]
+    [HttpDelete]
+    [Route("{userTaskId}", Name = nameof(DeleteUserTask))]
     public async Task<IActionResult> DeleteUserTask(
         [FromRoute] string userTaskId,
         CancellationToken cancellationToken
@@ -61,7 +64,8 @@ public class UserTaskController : ControllerBase
         return NoContent();
     }
 
-    [HttpPatch, Route("{userTaskId}", Name = nameof(UpdateUserTask))]
+    [HttpPatch]
+    [Route("{userTaskId}", Name = nameof(UpdateUserTask))]
     public async Task<IActionResult> UpdateUserTask(
         [FromRoute] string userTaskId,
         [FromBody] UpdateUserTaskBodyDto body,
@@ -71,7 +75,7 @@ public class UserTaskController : ControllerBase
         var command = new UpdateUserTask.Command
         {
             UserTaskId = userTaskId,
-            AssignToUserId = body.AssignToUserId,
+            AssignToUserId = body.AssignToUserId
         };
         await _commandBus.Send(command, cancellationToken);
 

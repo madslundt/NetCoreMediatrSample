@@ -59,7 +59,7 @@ public class GetUser
                 select new Result
                 {
                     FirstName = user.FirstName,
-                    LastName = user.LastName,
+                    LastName = user.LastName
                 };
 
             var result = await query.FirstOrDefaultAsync(cancellationToken);

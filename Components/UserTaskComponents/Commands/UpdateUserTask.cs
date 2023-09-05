@@ -53,7 +53,7 @@ public class UpdateUserTask
             _db.Update(task);
             var @event = new UserTaskUpdatedEvent
             {
-                UserTaskId = task.Id,
+                UserTaskId = task.Id
             };
             await _db.SaveChangesAndCommitAsync(cancellationToken, @event);
         }

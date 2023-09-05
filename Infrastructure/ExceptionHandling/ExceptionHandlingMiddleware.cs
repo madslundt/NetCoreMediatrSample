@@ -12,7 +12,10 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
 {
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
-    public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger) => _logger = logger;
+    public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger)
+    {
+        _logger = logger;
+    }
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
@@ -47,8 +50,9 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
         await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
     }
 
-    private static int GetStatusCode(Exception exception) =>
-        exception switch
+    private static int GetStatusCode(Exception exception)
+    {
+        return exception switch
         {
             BadRequestException => StatusCodes.Status400BadRequest,
             NotFoundException => StatusCodes.Status404NotFound,
@@ -56,13 +60,16 @@ internal sealed class ExceptionHandlingMiddleware : IMiddleware
             InvalidStronglyTypedIdException => StatusCodes.Status501NotImplemented,
             _ => StatusCodes.Status500InternalServerError
         };
+    }
 
-    private static string GetTitle(Exception exception) =>
-        exception switch
+    private static string GetTitle(Exception exception)
+    {
+        return exception switch
         {
             ApplicationException applicationException => applicationException.Message,
             _ => "Server Error"
         };
+    }
 
     private static IReadOnlyList<string> GetErrors(Exception exception)
     {

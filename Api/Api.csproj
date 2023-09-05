@@ -8,13 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Components\Components.csproj" />
-      <ProjectReference Include="..\EventHandlers\EventHandlers.csproj" />
-      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+        <ProjectReference Include="..\Components\Components.csproj"/>
+        <ProjectReference Include="..\EventHandlers\EventHandlers.csproj"/>
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

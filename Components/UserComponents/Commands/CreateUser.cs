@@ -54,7 +54,7 @@ public class CreateUser
                 Console.WriteLine(e);
                 throw;
             }
-            
+
             var @event = new UserCreatedEvent
             {
                 UserId = user.Id

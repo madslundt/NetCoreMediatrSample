@@ -8,7 +8,7 @@ public sealed class QueryBus : IQueryBus
 
     public QueryBus(IMediator mediator)
     {
-        _mediator = mediator ?? throw new Exception($"Missing dependency '{nameof(IMediator)}'");   
+        _mediator = mediator ?? throw new Exception($"Missing dependency '{nameof(IMediator)}'");
     }
 
     public async Task<TResponse> Send<TResponse>(IQuery<TResponse> query, CancellationToken cancellationToken = default)

@@ -16,6 +16,16 @@ public class IntegrationTestApiFactory : WebApplicationFactory<Program>, IAsyncL
             .WithPassword("pass123!")
             .Build();
 
+    public Task InitializeAsync()
+    {
+        return _dbContainer.StartAsync();
+    }
+
+    public new Task DisposeAsync()
+    {
+        return _dbContainer.StopAsync();
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureTestServices(services =>
@@ -32,15 +42,5 @@ public class IntegrationTestApiFactory : WebApplicationFactory<Program>, IAsyncL
                 options.UseSqlServer(_dbContainer.GetConnectionString());
             });
         });
-    }
-
-    public Task InitializeAsync()
-    {
-        return _dbContainer.StartAsync();
-    }
-
-    public new Task DisposeAsync()
-    {
-        return _dbContainer.StopAsync();
     }
 }

@@ -49,7 +49,7 @@ public class DeleteUser
             {
                 UserId = user.Id
             };
-            
+
             await _db.SaveChangesAndCommitAsync(cancellationToken, @event);
         }
 

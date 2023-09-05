@@ -7,8 +7,8 @@ namespace Api.IntegrationTests;
 public abstract class BaseIntegrationTest : IClassFixture<IntegrationTestApiFactory>
 {
     private readonly IServiceScope _scope;
-    protected readonly DatabaseContext Db;
     protected readonly HttpClient Client;
+    protected readonly DatabaseContext Db;
 
     protected BaseIntegrationTest(IntegrationTestApiFactory factory)
     {

@@ -5,10 +5,6 @@ namespace EventHandlers.UserEventHandlers;
 
 public class LogUserDeletedEventHandler : IEventHandler<UserDeletedEvent>
 {
-    public LogUserDeletedEventHandler()
-    {
-    }
-
     public Task Handle(UserDeletedEvent @event, CancellationToken cancellationToken)
     {
         Console.WriteLine($"User with id '{@event.UserId}' deleted");

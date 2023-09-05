@@ -11,13 +11,13 @@ public class UserTaskContext
             b.AddBaseModelContext<UserTask, UserTaskId>();
             b.Property(p => p.Title);
             b.Property(p => p.Description);
-            
+
             b.HasOne(task => task.StatusRef)
                 .WithMany()
                 .HasForeignKey(task => task.StatusEnum)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
-            
+
             b.HasOne(task => task.CreatedByUser)
                 .WithMany(user => user.CreatedUserTasks)
                 .HasForeignKey(task => task.CreatedByUserId)
