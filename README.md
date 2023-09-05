@@ -11,7 +11,7 @@ To execute the project, you must ensure that Docker is properly installed. Subse
 ```bash
 docker-compose up
 ```
-*"To avoid using a cached version, simply include the `--build --force-recreate` arguments when running the command. Please be aware that these arguments will reset all contents within the Docker image."*
+*To avoid using a cached version, simply include the `--build --force-recreate` arguments when running the command. Please be aware that these arguments will reset all contents within the Docker image.*
 
 This command will initialize the API, the background worker, and a SQL Server database. The API will be accessible on port 80, and the Hangfire dashboard will be accessible on port 81.
 
