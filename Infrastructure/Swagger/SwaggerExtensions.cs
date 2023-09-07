@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace Infrastructure.Swagger;
 
@@ -10,13 +11,32 @@ public static class SwaggerExtensions
     {
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(c =>
+        services.AddSwaggerGen(options =>
         {
-            c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-            c.IgnoreObsoleteActions();
-            c.IgnoreObsoleteProperties();
+            options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+            options.IgnoreObsoleteActions();
+            options.IgnoreObsoleteProperties();
             // c.CustomSchemaIds(type => type.FullName);
-            c.CustomSchemaIds(type => type.FullName?.Replace("+", "."));
+            options.CustomSchemaIds(type => type.FullName?.Replace("+", "."));
+            options.OperationFilter<AuthOperationsFilter>();
+
+            // options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            // {
+            //     In = ParameterLocation.Header,
+            //     Description = "Please enter a valid token",
+            //     Name = "Authorization",
+            //     Type = SecuritySchemeType.OAuth2,
+            //     BearerFormat = "JWT",
+            //     Scheme = "Bearer",
+            //     Flows = new OpenApiOAuthFlows
+            //     {
+            //         Implicit = new OpenApiOAuthFlow
+            //         {
+            //             AuthorizationUrl = new Uri("/auth-server/connect/authorize", UriKind.Absolute),
+            //             Scopes = new Dictionary<string, string>()
+            //         }
+            //     }
+            // });
         });
 
         return services;
