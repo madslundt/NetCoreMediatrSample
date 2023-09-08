@@ -1,4 +1,3 @@
-using DataModel.Libs.Extensions;
 using Infrastructure.StronglyTypedIds;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,7 +9,6 @@ public static class BaseModelExtensions
         where T : BaseModel<TId> where TId : StronglyTypedIdBaseEntity<TId>
     {
         builder.Property(p => p.Id)
-            .SupportStronglyTypedId()
             .IsRequired()
             .ValueGeneratedOnAdd();
 

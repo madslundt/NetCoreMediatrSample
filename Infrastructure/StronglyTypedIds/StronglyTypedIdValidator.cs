@@ -21,4 +21,20 @@ public static class StronglyTypedIdValidator
             .WithMessage(
                 $"Id is not valid. Valid format is {StronglyTypedIdBaseEntity<TId>.GetPlaceholder()}");
     }
+
+    public static void IdMustBeValid<TId, T>(this IRuleBuilder<T, TId> ruleBuilder)
+        where TId : StronglyTypedIdBaseEntity<TId>
+    {
+        ruleBuilder.Must((_, id, _) => id.IsValid())
+            .WithMessage(
+                $"Id is not valid. Valid format is {StronglyTypedIdBaseEntity<TId>.GetPlaceholder()}");
+    }
+
+    public static void OptionalIdMustBeValid<TId, T>(this IRuleBuilder<T, TId?> ruleBuilder)
+        where TId : StronglyTypedIdBaseEntity<TId>
+    {
+        ruleBuilder.Must((_, id, _) => id is null || id.IsValid())
+            .WithMessage(
+                $"Id is not valid. Valid format is {StronglyTypedIdBaseEntity<TId>.GetPlaceholder()}");
+    }
 }

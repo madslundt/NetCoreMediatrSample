@@ -9,6 +9,7 @@ public class UserTaskContext
         builder.Entity<UserTask>(b =>
         {
             b.AddBaseModelContext<UserTask, UserTaskId>();
+
             b.Property(p => p.Title);
             b.Property(p => p.Description);
 

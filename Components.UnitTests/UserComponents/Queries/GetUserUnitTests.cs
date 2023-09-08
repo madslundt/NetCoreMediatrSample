@@ -11,13 +11,20 @@ namespace Components.UnitTests.UserComponents.Queries;
 
 public class GetUserUnitTests : BaseUnitTest
 {
+    public static IEnumerable<object[]> GetUserIds(string id)
+    {
+        return new List<UserId[]>
+        {
+            new UserId[] {new(id)}
+        };
+    }
+
     [Theory]
-    [InlineData("Not valid id")]
-    [InlineData("123456789")]
-    [InlineData("us_123456789")]
-    [InlineData("un_01h9h119dmpapchz8ap7x1f26b")]
-    [InlineData(null)]
-    public void GetUserValidator_Should_ThrowValidationError_When_UserIdIsNotValid(string userId)
+    [MemberData(nameof(GetUserIds), "Not valid id")]
+    [MemberData(nameof(GetUserIds), "123456789")]
+    [MemberData(nameof(GetUserIds), "us_123456789")]
+    [MemberData(nameof(GetUserIds), "un_01h9h119dmpapchz8ap7x1f26b")]
+    public void GetUserValidator_Should_ThrowValidationError_When_UserIdIsNotValid(UserId userId)
     {
         var query = new GetUser.Query
         {
@@ -35,7 +42,7 @@ public class GetUserUnitTests : BaseUnitTest
     {
         var query = new GetUser.Query
         {
-            UserId = UserId.New().ToString()
+            UserId = UserId.New()
         };
 
         var validator = new GetUser.GetUserValidator();
@@ -49,7 +56,7 @@ public class GetUserUnitTests : BaseUnitTest
     {
         var query = new GetUser.Query
         {
-            UserId = UserId.New().ToString()
+            UserId = UserId.New()
         };
 
         using var db = new DatabaseContext(DbContextOptions);
@@ -76,7 +83,7 @@ public class GetUserUnitTests : BaseUnitTest
 
         var query = new GetUser.Query
         {
-            UserId = user.Id.ToString()
+            UserId = user.Id
         };
 
         using var db = new DatabaseContext(DbContextOptions);

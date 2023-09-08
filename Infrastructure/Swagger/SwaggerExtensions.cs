@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 
 namespace Infrastructure.Swagger;
 
@@ -19,6 +18,7 @@ public static class SwaggerExtensions
             // c.CustomSchemaIds(type => type.FullName);
             options.CustomSchemaIds(type => type.FullName?.Replace("+", "."));
             options.OperationFilter<AuthOperationsFilter>();
+            options.SchemaFilter<StronglyTypedIdSchemaFilter>();
 
             // options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             // {

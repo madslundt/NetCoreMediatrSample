@@ -31,7 +31,7 @@ public class GetUserTasksCreatedByUser
         {
             public string Title { get; init; } = null!;
             public string Description { get; init; } = null!;
-            public string? AssignedToUserId { get; init; }
+            public UserId? AssignedToUserId { get; init; }
         }
     }
 
@@ -66,7 +66,7 @@ public class GetUserTasksCreatedByUser
                 {
                     Title = task.Title,
                     Description = task.Description,
-                    AssignedToUserId = task.AssignedToUserId.ToString()
+                    AssignedToUserId = task.AssignedToUserId
                 };
 
             var result = await query.ToListAsync(cancellationToken);

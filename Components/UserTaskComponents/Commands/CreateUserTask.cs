@@ -14,8 +14,8 @@ public class CreateUserTask
     {
         public string Title { get; init; } = null!;
         public string Description { get; init; } = null!;
-        public string UserId { get; init; } = null!;
-        public string? AssignedUserId { get; init; }
+        public UserId UserId { get; init; } = null!;
+        public UserId? AssignedUserId { get; init; }
     }
 
     public class CreateUserTaskValidator : AbstractValidator<Command>
@@ -24,14 +24,14 @@ public class CreateUserTask
         {
             RuleFor(command => command.Title).NotEmpty();
             RuleFor(command => command.Description).NotEmpty();
-            RuleFor(command => command.UserId).IdMustBeValid<UserId, Command>();
-            RuleFor(command => command.AssignedUserId).OptionalIdMustBeValid<UserId, Command>();
+            RuleFor(command => command.UserId).IdMustBeValid();
+            RuleFor(command => command.AssignedUserId).OptionalIdMustBeValid();
         }
     }
 
     public class Result
     {
-        public string Id { get; init; } = null!;
+        public UserTaskId Id { get; init; } = null!;
     }
 
     public class Handler : ICommandHandler<Command, Result>
@@ -49,8 +49,8 @@ public class CreateUserTask
             {
                 Title = request.Title,
                 Description = request.Description,
-                AssignedToUserId = request.AssignedUserId != null ? new UserId(request.AssignedUserId) : null,
-                CreatedByUserId = new UserId(request.UserId)
+                AssignedToUserId = request.AssignedUserId,
+                CreatedByUserId = request.UserId
             };
 
             _db.Add(task);
@@ -62,7 +62,7 @@ public class CreateUserTask
 
             var result = new Result
             {
-                Id = task.Id.ToString()
+                Id = task.Id
             };
 
             return result;

@@ -5,6 +5,7 @@ using Infrastructure.BackgroundJob.Hangfire;
 using Infrastructure.Cors;
 using Infrastructure.CQRS;
 using Infrastructure.HealthChecks;
+using Infrastructure.StronglyTypedIds;
 using Infrastructure.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,7 +25,8 @@ builder.Services
     .AddHangfire(hangfireConnectionString)
     .AddCQRS()
     .AddApiHealthChecks()
-    .AddControllers();
+    .AddControllers()
+    .AddStronglyTypedIds();
 
 var allowAllOrigins = "_allowAllOrigins";
 builder.Services.AddCorsPolicy(allowAllOrigins);

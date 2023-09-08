@@ -13,14 +13,14 @@ public class GetUser
 {
     public class Query : IQuery<Result>
     {
-        public string UserId { get; init; } = null!;
+        public UserId UserId { get; init; } = null!;
     }
 
     public class GetUserValidator : AbstractValidator<Query>
     {
         public GetUserValidator()
         {
-            RuleFor(query => query.UserId).IdMustBeValid<UserId, Query>();
+            RuleFor(query => query.UserId).IdMustBeValid();
         }
     }
 
@@ -41,12 +41,11 @@ public class GetUser
 
         public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
         {
-            var userId = new UserId(request.UserId);
-            var result = await GetActiveUser(userId, cancellationToken);
+            var result = await GetActiveUser(request.UserId, cancellationToken);
 
             if (result is null)
             {
-                throw new NotFoundException("User", userId.ToString());
+                throw new NotFoundException("User", request.UserId);
             }
 
             return result;

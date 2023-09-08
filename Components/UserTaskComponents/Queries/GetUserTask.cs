@@ -1,5 +1,6 @@
 using DataModel;
 using DataModel.Models.Refs.TaskStatusRefs;
+using DataModel.Models.Users;
 using DataModel.Models.UserTasks;
 using FluentValidation;
 using Infrastructure.CQRS.Queries;
@@ -13,14 +14,14 @@ public class GetUserTask
 {
     public class Query : IQuery<Result>
     {
-        public string UserTaskId { get; init; } = null!;
+        public UserTaskId UserTaskId { get; init; } = null!;
     }
 
     public class GetUserTaskValidator : AbstractValidator<Query>
     {
         public GetUserTaskValidator()
         {
-            RuleFor(query => query.UserTaskId)!.IdMustBeValid<UserTaskId, Query>();
+            RuleFor(query => query.UserTaskId)!.IdMustBeValid();
         }
     }
 
@@ -28,8 +29,8 @@ public class GetUserTask
     {
         public string Title { get; init; } = null!;
         public string Description { get; init; } = null!;
-        public string CreatedByUserId { get; init; } = null!;
-        public string? AssignedToUserId { get; init; }
+        public UserId CreatedByUserId { get; init; } = null!;
+        public UserId? AssignedToUserId { get; init; }
     }
 
     public class Handler : IQueryHandler<Query, Result>
@@ -43,8 +44,7 @@ public class GetUserTask
 
         public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
         {
-            var taskId = new UserTaskId(request.UserTaskId);
-            var result = await GetAvailableTask(taskId, cancellationToken);
+            var result = await GetAvailableTask(request.UserTaskId, cancellationToken);
 
             if (result is null)
             {
@@ -62,8 +62,8 @@ public class GetUserTask
                 {
                     Title = task.Title,
                     Description = task.Description,
-                    AssignedToUserId = task.AssignedToUserId.ToString(),
-                    CreatedByUserId = task.CreatedByUserId.ToString()
+                    AssignedToUserId = task.AssignedToUserId,
+                    CreatedByUserId = task.CreatedByUserId
                 };
 
             var result = await query.FirstOrDefaultAsync(cancellationToken);

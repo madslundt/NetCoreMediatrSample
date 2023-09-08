@@ -3,6 +3,7 @@ using DataModel.Models.Refs.UserStatusRefs;
 using DataModel.Models.Users;
 using DataModel.Models.UserTasks;
 using Infrastructure.CQRS.Events;
+using Infrastructure.StronglyTypedIds;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataModel;
@@ -29,6 +30,9 @@ public class DatabaseContext : DbContext
         // Refs
         UserStatusRefContext.Build(builder);
         TaskStatusRefContext.Build(builder);
+
+        // Add strongly typed id ef core conversions
+        StronglyTypedIdConversions.AddStronglyTypedIdConversions(builder);
     }
 
     public async Task<int> SaveChangesAndCommitAsync(CancellationToken cancellationToken = default,

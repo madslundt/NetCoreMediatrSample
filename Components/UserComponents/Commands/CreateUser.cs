@@ -27,7 +27,7 @@ public class CreateUser
 
     public class Result
     {
-        public string Id { get; init; } = null!;
+        public UserId Id { get; init; } = null!;
     }
 
     public class Handler : ICommandHandler<Command, Result>
@@ -66,7 +66,7 @@ public class CreateUser
 
             var result = new Result
             {
-                Id = user.Id.ToString()
+                Id = user.Id
             };
 
             return result;

@@ -1,5 +1,6 @@
 using Components.UserComponents.Commands;
 using Components.UserComponents.Queries;
+using DataModel.Models.Users;
 using Infrastructure.CQRS.Commands;
 using Infrastructure.CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Route("{userId}", Name = nameof(GetUser))]
-    public async Task<ActionResult<GetUser.Result>> GetUser([FromRoute] string userId,
+    public async Task<ActionResult<GetUser.Result>> GetUser([FromRoute] UserId userId,
         CancellationToken cancellationToken)
     {
         var query = new GetUser.Query

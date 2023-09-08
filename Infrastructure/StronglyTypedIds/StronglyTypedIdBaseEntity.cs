@@ -1,6 +1,39 @@
+using System.ComponentModel;
+
 namespace Infrastructure.StronglyTypedIds;
 
-public abstract record StronglyTypedIdBaseEntity<T> where T : StronglyTypedIdBaseEntity<T>
+public abstract record StronglyTypedIdBaseEntity
+{
+    public static string GetPattern<T>() where T : StronglyTypedIdBaseEntity<T>
+    {
+        var instance = (T) Activator.CreateInstance(typeof(T), Ulid.NewUlid().ToString())!;
+        return instance.Prefix + "[0-7][0-9A-HJKMNP-TV-Z]{25}".ToLowerInvariant();
+    }
+
+    public static string GetPlaceholder<T>() where T : StronglyTypedIdBaseEntity<T>
+    {
+        var instance = (T) Activator.CreateInstance(typeof(T), Ulid.NewUlid().ToString())!;
+        return $"{instance.Prefix}{Ulid.Empty}";
+    }
+
+    public static bool TryParse<T>(string id, out T? result) where T : StronglyTypedIdBaseEntity<T>
+    {
+        result = null;
+
+        if (string.IsNullOrWhiteSpace(id))
+        {
+            return false;
+        }
+
+        var instance = (T) Activator.CreateInstance(typeof(T), id)!;
+        result = instance;
+
+        return true;
+    }
+}
+
+[TypeConverter(typeof(StronglyTypedIdConverter))]
+public abstract record StronglyTypedIdBaseEntity<T> : StronglyTypedIdBaseEntity where T : StronglyTypedIdBaseEntity<T>
 {
     protected StronglyTypedIdBaseEntity(string prefix, string value)
     {
@@ -33,10 +66,14 @@ public abstract record StronglyTypedIdBaseEntity<T> where T : StronglyTypedIdBas
         return (T) Activator.CreateInstance(typeof(T), id)!;
     }
 
+    public static bool TryParse(string id, out T? result)
+    {
+        return TryParse<T>(id, out result);
+    }
+
     public static string GetPlaceholder()
     {
-        var instance = (T) Activator.CreateInstance(typeof(T), Ulid.NewUlid().ToString())!;
-        return $"{instance.Prefix}{new string('x', instance.Value.Length)}";
+        return GetPlaceholder<T>();
     }
 
     public bool IsValid()

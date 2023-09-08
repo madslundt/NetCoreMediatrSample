@@ -1,6 +1,7 @@
 using Api.Dtos.UserTaskDtos;
 using Components.UserTaskComponents.Commands;
 using Components.UserTaskComponents.Queries;
+using DataModel.Models.UserTasks;
 using Infrastructure.CQRS.Commands;
 using Infrastructure.CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,7 @@ public class UserTaskController : ControllerBase
     [HttpGet]
     [Route("{userTaskId}", Name = nameof(GetUserTask))]
     public async Task<ActionResult<GetUserTask.Result>> GetUserTask(
-        [FromRoute] string userTaskId,
+        [FromRoute] UserTaskId userTaskId,
         CancellationToken cancellationToken
     )
     {
@@ -67,7 +68,7 @@ public class UserTaskController : ControllerBase
     [HttpPatch]
     [Route("{userTaskId}", Name = nameof(UpdateUserTask))]
     public async Task<IActionResult> UpdateUserTask(
-        [FromRoute] string userTaskId,
+        [FromRoute] UserTaskId userTaskId,
         [FromBody] UpdateUserTaskBodyDto body,
         CancellationToken cancellationToken
     )

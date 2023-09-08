@@ -2,16 +2,16 @@ namespace DataModel.Models;
 
 public abstract class BaseModelEnum<TEnum> where TEnum : Enum
 {
-    public BaseModelEnum()
+    protected BaseModelEnum()
     {
     }
 
-    public BaseModelEnum(TEnum baseModelEnum)
+    protected BaseModelEnum(TEnum baseModelEnum)
     {
         Id = baseModelEnum;
         Name = baseModelEnum.ToString();
     }
 
-    public TEnum Id { get; }
-    public string Name { get; }
+    public TEnum Id { get; } = default!;
+    public string Name { get; } = null!;
 }

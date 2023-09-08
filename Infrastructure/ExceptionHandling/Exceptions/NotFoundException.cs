@@ -1,3 +1,5 @@
+using Infrastructure.StronglyTypedIds;
+
 namespace Infrastructure.ExceptionHandling.Exceptions;
 
 public class NotFoundException : Exception
@@ -6,7 +8,8 @@ public class NotFoundException : Exception
     {
     }
 
-    public NotFoundException(string propertyName, Guid id) : base(PropertyIdMessage(propertyName, id.ToString()))
+    public NotFoundException(string propertyName, StronglyTypedIdBaseEntity id) : base(
+        PropertyIdMessage(propertyName, id.ToString()))
     {
     }
 

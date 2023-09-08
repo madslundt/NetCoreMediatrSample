@@ -15,16 +15,16 @@ public class UpdateUserTask
 {
     public class Command : ICommand
     {
-        public string UserTaskId { get; init; } = null!;
-        public string AssignToUserId { get; init; } = null!;
+        public UserTaskId UserTaskId { get; init; } = null!;
+        public UserId AssignToUserId { get; init; } = null!;
     }
 
     public class AssignTaskToUserValidator : AbstractValidator<Command>
     {
         public AssignTaskToUserValidator()
         {
-            RuleFor(command => command.UserTaskId).IdMustBeValid<UserTaskId, Command>();
-            RuleFor(command => command.AssignToUserId).IdMustBeValid<UserId, Command>();
+            RuleFor(command => command.UserTaskId).IdMustBeValid();
+            RuleFor(command => command.AssignToUserId).IdMustBeValid();
         }
     }
 
@@ -39,16 +39,14 @@ public class UpdateUserTask
 
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            var taskId = new UserTaskId(request.UserTaskId);
-            var task = await GetTask(taskId, cancellationToken);
+            var task = await GetTask(request.UserTaskId, cancellationToken);
 
             if (task is null)
             {
-                throw new NotFoundException(nameof(task), taskId.ToString());
+                throw new NotFoundException(nameof(task), request.UserTaskId);
             }
 
-            var assignToUserId = new UserId(request.AssignToUserId);
-            task.AssignedToUserId = assignToUserId;
+            task.AssignedToUserId = request.AssignToUserId;
 
             _db.Update(task);
             var @event = new UserTaskUpdatedEvent
