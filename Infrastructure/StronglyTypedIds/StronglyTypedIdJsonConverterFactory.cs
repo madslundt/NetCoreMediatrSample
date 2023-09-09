@@ -58,7 +58,7 @@ public class StronglyTypedIdJsonConverter<TStronglyTypedId> : JsonConverter<TStr
         }
         else
         {
-            JsonSerializer.Serialize(writer, value.Value, options);
+            JsonSerializer.Serialize(writer, value.ToString(), options);
         }
     }
 }

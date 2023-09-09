@@ -4,6 +4,11 @@ namespace Infrastructure.StronglyTypedIds;
 
 public abstract record StronglyTypedIdBaseEntity
 {
+    protected string Prefix { get; init; } = null!;
+    protected string Value { get; init; } = null!;
+    
+    public sealed override string ToString() => Value;
+    
     public static string GetPattern<T>() where T : StronglyTypedIdBaseEntity<T>
     {
         var instance = (T) Activator.CreateInstance(typeof(T), Ulid.NewUlid().ToString())!;
@@ -16,7 +21,7 @@ public abstract record StronglyTypedIdBaseEntity
         return $"{instance.Prefix}{Ulid.Empty}";
     }
 
-    public static bool TryParse<T>(string id, out T? result) where T : StronglyTypedIdBaseEntity<T>
+    protected static bool TryParse<T>(string id, out T? result) where T : StronglyTypedIdBaseEntity<T>
     {
         result = null;
 
@@ -49,14 +54,6 @@ public abstract record StronglyTypedIdBaseEntity<T> : StronglyTypedIdBaseEntity 
 
         Prefix = prefix;
         Value = value.ToLowerInvariant();
-    }
-
-    public string Prefix { get; } = null!;
-    public string Value { get; }
-
-    public sealed override string ToString()
-    {
-        return Value;
     }
 
     public static T New()
