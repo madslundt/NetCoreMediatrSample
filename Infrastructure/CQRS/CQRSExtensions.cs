@@ -24,14 +24,12 @@ public static class CQRSExtensions
         services.AddScoped<IEventBus, EventBus>();
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        services.AddScoped<ExceptionHandlingMiddleware>();
 
         return services;
     }
 
     public static WebApplication UseCQRS(this WebApplication app)
     {
-        app.UseMiddleware<ExceptionHandlingMiddleware>();
         return app;
     }
 }

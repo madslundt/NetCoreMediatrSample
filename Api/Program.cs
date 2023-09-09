@@ -4,6 +4,7 @@ using Infrastructure.BackgroundJob;
 using Infrastructure.BackgroundJob.Hangfire;
 using Infrastructure.Cors;
 using Infrastructure.CQRS;
+using Infrastructure.ExceptionHandling;
 using Infrastructure.HealthChecks;
 using Infrastructure.StronglyTypedIds;
 using Infrastructure.Swagger;
@@ -24,6 +25,7 @@ builder.Services
     .AddDataModel(dataModelConnectionString)
     .AddHangfire(hangfireConnectionString)
     .AddCQRS()
+    .AddExceptionHandling()
     .AddApiHealthChecks()
     .AddControllers()
     .AddStronglyTypedIds();
@@ -43,6 +45,7 @@ app.UseHttpsRedirection();
 
 app
     .UseCQRS()
+    .UseExceptionhandling()
     .UseApiHealthChecks()
     .MapControllers();
 
