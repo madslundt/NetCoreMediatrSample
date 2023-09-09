@@ -37,7 +37,7 @@ public static class StronglyTypedIdConversions
             Expression.Property(stronglyTypedIdParam, "Value"),
             stronglyTypedIdParam);
 
-        // value => new ProductId(value)
+        // value => new <StronglyTypedIdBaseEntity<T>>(value)
         var fromProviderFuncType = typeof(Func<,>)
             .MakeGenericType(typeof(string), stronglyTypedIdType);
         var valueParam = Expression.Parameter(typeof(string), "value");
