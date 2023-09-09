@@ -9,9 +9,9 @@ public static class StronglyTypedIdConversions
 {
     private static readonly ConcurrentDictionary<Type, ValueConverter> StronglyTypedIdConverters = new();
 
-    public static void AddStronglyTypedIdConversions(ModelBuilder modelBuilder)
+    public static void AddStronglyTypedIdConversions(this ModelBuilder builder)
     {
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        foreach (var entityType in builder.Model.GetEntityTypes())
         {
             foreach (var property in entityType.GetProperties())
             {

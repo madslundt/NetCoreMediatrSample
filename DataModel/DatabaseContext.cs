@@ -32,7 +32,7 @@ public class DatabaseContext : DbContext
         TaskStatusRefContext.Build(builder);
 
         // Add strongly typed id ef core conversions
-        StronglyTypedIdConversions.AddStronglyTypedIdConversions(builder);
+        builder.AddStronglyTypedIdConversions();
     }
 
     public async Task<int> SaveChangesAndCommitAsync(CancellationToken cancellationToken = default,

@@ -22,7 +22,7 @@ public class StronglyTypedIdJsonConverterFactory : JsonConverterFactory
     {
         if (!StronglyTypedIdHelper.IsStronglyTypedId(typeToConvert))
         {
-            throw new InvalidOperationException($"Cannot create converter for '{typeToConvert}'");
+            throw new InvalidStronglyTypedIdException($"Cannot create converter for '{typeToConvert}'");
         }
 
         var type = typeof(StronglyTypedIdJsonConverter<>).MakeGenericType(typeToConvert);

@@ -41,7 +41,7 @@ public class StronglyTypedIdConverter : TypeConverter
     {
         if (!StronglyTypedIdHelper.IsStronglyTypedId(stronglyTypedIdType))
         {
-            throw new InvalidOperationException($"The type '{stronglyTypedIdType}' is not a strongly typed id");
+            throw new InvalidStronglyTypedIdException($"The type '{stronglyTypedIdType}' is not a strongly typed id");
         }
 
         var actualConverterType = typeof(StronglyTypedIdConverter<>).MakeGenericType(stronglyTypedIdType);
