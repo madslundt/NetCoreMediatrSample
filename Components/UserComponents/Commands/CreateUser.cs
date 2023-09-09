@@ -48,15 +48,7 @@ public class CreateUser
                 Email = request.Email
             };
 
-            try
-            {
-                _db.Add(user);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            _db.Add(user);
 
             var @event = new UserCreatedEvent
             {
