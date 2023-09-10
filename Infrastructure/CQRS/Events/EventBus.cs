@@ -5,10 +5,10 @@ namespace Infrastructure.CQRS.Events;
 
 public sealed class EventBus : IEventBus
 {
-    private readonly IBackgroundJobBus? _backgroundJobBus;
+    private readonly IBackgroundJobBus _backgroundJobBus;
     private readonly IMediator _mediator;
 
-    public EventBus(IMediator mediator, IBackgroundJobBus? backgroundJobBus)
+    public EventBus(IMediator mediator, IBackgroundJobBus backgroundJobBus)
     {
         _mediator = mediator;
         _backgroundJobBus = backgroundJobBus;
@@ -24,14 +24,7 @@ public sealed class EventBus : IEventBus
 
     private async Task Commit(IEvent @event)
     {
-        if (_backgroundJobBus is null)
-        {
-            PublishEvent(@event);
-        }
-        else
-        {
-            await _backgroundJobBus.Enqueue(() => PublishEvent(@event));
-        }
+        await _backgroundJobBus.Enqueue(() => PublishEvent(@event));
     }
 
     public void PublishEvent(IEvent @event)
